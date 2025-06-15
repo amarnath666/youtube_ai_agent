@@ -27,25 +27,27 @@ function sendSSEMessage(
 }
 
 export async function POST(req: Request) {
+  // console.log("started POST route");
   try {
     const { userId } = await auth();
+    
     if (!userId) {
       return new Response("Unauthorized", { status: 401 });
     }
 
     const { messages, newMessage, chatId } =
       (await req.json()) as ChatRequestBody;
-      console.log("messages from next route", messages);
-      console.log("newMessage from next route", newMessage);
-      console.log("chatId from next route", chatId);
+      // console.log("messages from next route", messages);
+      // console.log("newMessage from next route", newMessage);
+      // console.log("chatId from next route", chatId);
 
     const convex = getConvexClient();
 
     // Create stream with larger queue strategy for better performance
     const stream = new TransformStream({}, { highWaterMark: 1024 });
-    console.log("stream", stream);
+    // console.log("stream", stream);
     const writer = stream.writable.getWriter();
-    console.log("writer", writer);
+    // console.log("writer", writer);
 
     const response = new Response(stream.readable, {
       headers: {
@@ -56,7 +58,7 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("response from next route", response);
+    // console.log("response from next route", response);
 
     // Handle the streaming response
     (async () => {
@@ -86,13 +88,17 @@ export async function POST(req: Request) {
 
           // Process the events
           for await (const event of eventStream) {
-            console.log("🔄 Event:", event);
+           
 
             if (event.event === "on_chat_model_stream") {
+
               const token = event.data.chunk;
+              
               if (token) {
                 // Access the text property from the AIMessageChunk
-                const text = token.content.at(0)?.["text"];
+                const text = token.content;
+
+                // console.log("text from on_chat_model_stream", text);
                 if (text) {
                   await sendSSEMessage(writer, {
                     type: StreamMessageType.Token,
@@ -101,12 +107,14 @@ export async function POST(req: Request) {
                 }
               }
             } else if (event.event === "on_tool_start") {
+              // console.log("token from on_tool_start", event.event);
               await sendSSEMessage(writer, {
                 type: StreamMessageType.ToolStart,
                 tool: event.name || "unknown",
                 input: event.data.input,
               });
             } else if (event.event === "on_tool_end") {
+              // console.log("token from on_tool_start", event.event);
               const toolMessage = new ToolMessage(event.data.output);
 
               await sendSSEMessage(writer, {
@@ -116,7 +124,7 @@ export async function POST(req: Request) {
               });
             }
           }
-
+          // console.log("sent all messages");
           // Send completion message without storing the response
           await sendSSEMessage(writer, { type: StreamMessageType.Done });
         } catch (streamError) {

@@ -54,18 +54,18 @@ const initialiseModel = () => {
           // console.log("🤖 Starting LLM call");
         },
         handleLLMEnd: async (output) => {
-          console.log("🤖 End LLM call", output);
+          // console.log("🤖 End LLM call", output);
           const usage = output.llmOutput?.usage;
-          if (usage) {
-            console.log("📊 Token Usage:", {
-              input_tokens: usage.input_tokens,
-              output_tokens: usage.output_tokens,
-              total_tokens: usage.input_tokens + usage.output_tokens,
-              cache_creation_input_tokens:
-                usage.cache_creation_input_tokens || 0,
-              cache_read_input_tokens: usage.cache_read_input_tokens || 0,
-            });
-          }
+          // if (usage) {
+          //   console.log("📊 Token Usage:", {
+          //     input_tokens: usage.input_tokens,
+          //     output_tokens: usage.output_tokens,
+          //     total_tokens: usage.input_tokens + usage.output_tokens,
+          //     cache_creation_input_tokens:
+          //       usage.cache_creation_input_tokens || 0,
+          //     cache_read_input_tokens: usage.cache_read_input_tokens || 0,
+          //   });
+          // }
         },
         handleLLMNewToken: async (token: string) => {
           // console.log("🔤 New token:", token);
@@ -98,6 +98,7 @@ function shouldContinue(state: typeof MessagesAnnotation.State) {
 
 // Define a new graph
 const createWorkflow = () => {
+  console.log("createWorkflow");
   const model = initialiseModel();
 
   const stateGraph = new StateGraph(MessagesAnnotation)
@@ -113,22 +114,22 @@ const createWorkflow = () => {
         new MessagesPlaceholder("messages"),
       ]);
 
-      console.log("promptTemplate", promptTemplate);
+       console.log("promptTemplate", promptTemplate);
 
       // Trim the messages to manage conversation history
       const trimmedMessages = await trimmer.invoke(state.messages);
 
-      console.log("trimmedMessages", trimmedMessages);
+       console.log("trimmedMessages", trimmedMessages);
 
       // Format the prompt with the current messages
       const prompt = await promptTemplate.invoke({ messages: trimmedMessages });
 
-      console.log("prompt", prompt);
+       console.log("prompt", prompt);
 
       // Get response from the model
       const response = await model.invoke(prompt);
 
-      console.log("response", response);
+       console.log("response", response);
 
       return { messages: [response] };
     })
@@ -139,7 +140,6 @@ const createWorkflow = () => {
 
   return stateGraph;
 };
-
 
 function addCachingHeaders(messages: BaseMessage[]): BaseMessage[] {
   // Rules of cachaing headers for turn  by turn by turn conversations
@@ -184,6 +184,7 @@ function addCachingHeaders(messages: BaseMessage[]): BaseMessage[] {
 }
 
 export async function submitQuestion(messages: BaseMessage[], chatId: string) {
+  console.log("submitQuestion");
   const cachedMessages = addCachingHeaders(messages);
 
   console.log("cachedMessages", cachedMessages);
@@ -193,6 +194,9 @@ export async function submitQuestion(messages: BaseMessage[], chatId: string) {
   const checkpointer = new MemorySaver();
   const app = workflow.compile({ checkpointer });
 
+  console.log("messages before checkpointing:", messages);
+  console.log("chatId:", chatId);
+
   // Run the graph & stream
   const stream = await app.streamEvents(
     {
@@ -201,11 +205,11 @@ export async function submitQuestion(messages: BaseMessage[], chatId: string) {
     {
       version: "v2",
       configurable: {
-        threadId: chatId,
+        thread_id: chatId,
       },
       streamMode: "messages",
       runId: chatId,
     }
   );
-   return stream;
+  return stream;
 }
