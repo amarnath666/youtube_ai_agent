@@ -17,12 +17,7 @@ export const list = query({
       .order("asc")
       .collect();
 
-    if (SHOW_COMMENTS) {
-      console.log("📜 Retrieved messages:", {
-        chatId: args.chatId,
-        count: messages.length,
-      });
-    }
+
 
     return messages;
   },
@@ -34,12 +29,7 @@ export const send = mutation({
     content: v.string(),
   },
   handler: async (ctx, args) => {
-    if (SHOW_COMMENTS) {
-      console.log("📤 Sending message:", {
-        chatId: args.chatId,
-        content: args.content,
-      });
-    }
+
 
     // const identity = await ctx.auth.getUserIdentity();
     // if (!identity) {
@@ -59,12 +49,12 @@ export const send = mutation({
       createdAt: Date.now(),
     });
 
-    if (SHOW_COMMENTS) {
-      console.log("✅ Saved user message:", {
-        messageId,
-        chatId: args.chatId,
-      });
-    }
+    // if (SHOW_COMMENTS) {
+    //   console.log("✅ Saved user message:", {
+    //     messageId,
+    //     chatId: args.chatId,
+    //   });
+    // }
 
     return messageId;
   },
@@ -77,13 +67,13 @@ export const store = mutation({
     role: v.union(v.literal("user"), v.literal("assistant")),
   },
   handler: async (ctx, args) => {
-    if (SHOW_COMMENTS) {
-      console.log("💾 Storing message:", {
-        chatId: args.chatId,
-        role: args.role,
-        contentLength: args.content.length,
-      });
-    }
+    // if (SHOW_COMMENTS) {
+    //   console.log("💾 Storing message:", {
+    //     chatId: args.chatId,
+    //     role: args.role,
+    //     contentLength: args.content.length,
+    //   });
+    // }
 
     // Store message with preserved newlines and HTML
     const messageId = await ctx.db.insert("messages", {
@@ -96,13 +86,13 @@ export const store = mutation({
       createdAt: Date.now(),
     });
 
-    if (SHOW_COMMENTS) {
-      console.log("✅ Stored message:", {
-        messageId,
-        chatId: args.chatId,
-        role: args.role,
-      });
-    }
+    // if (SHOW_COMMENTS) {
+    //   console.log("✅ Stored message:", {
+    //     messageId,
+    //     chatId: args.chatId,
+    //     role: args.role,
+    //   });
+    // }
 
     return messageId;
   },

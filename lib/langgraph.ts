@@ -8,7 +8,7 @@ import {
   START,
   StateGraph,
 } from "@langchain/langgraph";
-import SYSTEM_MESSAGE from "@/constants/systemMessage";
+import SYSTEM_MESSAGE, { baseUrl } from "@/constants/systemMessage";
 import {
   ChatPromptTemplate,
   MessagesPlaceholder,
@@ -20,10 +20,13 @@ import {
   SystemMessage,
   trimMessages,
 } from "@langchain/core/messages";
+import { z } from "zod";
+import { DynamicStructuredTool } from "@langchain/core/tools";
+import axios from "axios";
 
 // Trim the messages to manage conversation history
 const trimmer = trimMessages({
-  maxTokens: 10,
+  maxTokens: 15,
   strategy: "last",
   tokenCounter: (msgs) => msgs.length,
   includeSystem: true,
@@ -31,16 +34,73 @@ const trimmer = trimMessages({
   startOn: "human",
 });
 
-const toolClient = new wxflows({
-  endpoint: process.env.WX_ENDPOINT || "",
-  apikey: process.env.wx_api_key || "",
-});
+// const toolClient = new wxflows({
+//   endpoint: process.env.WX_ENDPOINT || "",
+//   apikey: process.env.wx_api_key || "",
+// });
 
-// Retrieve the tools
-const tools = await toolClient.lcTools;
-const toolNode = new ToolNode(tools);
+// // Retrieve the tools
+// const tools = await toolClient.lcTools;
+// const toolNode = new ToolNode(tools);
+
+// YouTube transcript tool
+const createYouTubeTranscriptTool = () => {
+   console.log("🎥 Creating YouTube transcript tool...");
+  return new DynamicStructuredTool({
+    name: "youtube_transcript",
+    description:
+      "Get transcript from a YouTube video URL. Supports videos in almost all languages.",
+    schema: z.object({
+      url: z.string().describe("The YouTube video URL"),
+    }),
+    func: async ({ url }) => {
+      try {
+        console.log("🎥 Fetching YouTube transcript for:" , url);
+
+        const apiUrl =  `${baseUrl}/youtube-transcript`;
+        const response = await axios.post(apiUrl, { url });
+
+        console.log("response came")
+
+        const data = response?.data;
+
+        console.log("addded to data")
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        // Format response for better analysis
+        if (Array.isArray(data) && data?.length > 0) {
+          const doc = data[0];
+          const metadata = doc?.metadata || {};
+
+          return `📹 VIDEO INFORMATION:
+Title: ${metadata.title || "Unknown"}
+Channel: ${metadata.author || "Unknown"}
+View Count: ${metadata.view_count || "Unknown"}
+
+📝 FULL TRANSCRIPT:
+${doc.pageContent}
+
+📊 TRANSCRIPT STATS:
+- Word count: ~${doc.pageContent.split(" ").length}
+- Character count: ${doc.pageContent.length}`;
+        }
+
+        return "No transcript data available for this video.";
+      } catch (error: any) {
+        // console.error("❌ YouTube transcript error:", error);
+        return `${error.message}`;
+      }
+    },
+  });
+};
 
 const initialiseModel = () => {
+  const youtubeTranscriptTool = createYouTubeTranscriptTool();
+  const tools = [youtubeTranscriptTool];
+
   const model = new ChatDeepSeek({
     model: "deepseek-chat",
     temperature: 0.7,
@@ -74,7 +134,7 @@ const initialiseModel = () => {
     ],
   }).bindTools(tools);
 
-  return model;
+  return { model, tools };
 };
 
 // Define the function that determines whether to continue or not
@@ -87,19 +147,16 @@ function shouldContinue(state: typeof MessagesAnnotation.State) {
     return "tools";
   }
 
-  // If the last message is a tool message, route back to agent
-  if (lastMessage.content && lastMessage._getType() === "tool") {
-    return "agent";
-  }
-
   // Otherwise, we stop (reply to the user)
   return END;
 }
 
 // Define a new graph
 const createWorkflow = () => {
-  console.log("createWorkflow");
-  const model = initialiseModel();
+  // console.log("createWorkflow");
+  const { model, tools } = initialiseModel();
+
+  const toolNode = new ToolNode(tools);
 
   const stateGraph = new StateGraph(MessagesAnnotation)
     .addNode("agent", async (state) => {
@@ -114,22 +171,22 @@ const createWorkflow = () => {
         new MessagesPlaceholder("messages"),
       ]);
 
-       console.log("promptTemplate", promptTemplate);
+      // console.log("promptTemplate", promptTemplate);
 
       // Trim the messages to manage conversation history
       const trimmedMessages = await trimmer.invoke(state.messages);
 
-       console.log("trimmedMessages", trimmedMessages);
+      // console.log("trimmedMessages", trimmedMessages);
 
       // Format the prompt with the current messages
       const prompt = await promptTemplate.invoke({ messages: trimmedMessages });
 
-       console.log("prompt", prompt);
+      // console.log("prompt", prompt);
 
       // Get response from the model
       const response = await model.invoke(prompt);
 
-       console.log("response", response);
+      // console.log("response", response);
 
       return { messages: [response] };
     })
@@ -142,60 +199,37 @@ const createWorkflow = () => {
 };
 
 function addCachingHeaders(messages: BaseMessage[]): BaseMessage[] {
-  // Rules of cachaing headers for turn  by turn by turn conversations
-  // 1. Cache the first System message
-  // 2. Cache the last message
-  // 3. Cache the second to last human message
-
   if (!messages.length) return messages;
 
-  // Create a copy of messages to avoid mutating the original
   const cachedMessages = [...messages];
+  const lastMessage = cachedMessages[cachedMessages.length - 1];
 
-  // Helper to add cache control
-  const addCache = (message: BaseMessage) => {
-    message.content = [
+  if (lastMessage && typeof lastMessage.content === "string") {
+    lastMessage.content = [
       {
         type: "text",
-        text: message.content as string,
+        text: lastMessage.content,
         cache_control: { type: "ephemeral" },
       },
     ];
-  };
-
-  // Cache the last message
-  // console.log("🤑🤑🤑 Caching last message");
-  addCache(cachedMessages.at(-1)!);
-
-  // Find and cache the second-to-last human message
-  let humanCount = 0;
-  for (let i = cachedMessages.length - 1; i >= 0; i--) {
-    if (cachedMessages[i] instanceof HumanMessage) {
-      humanCount++;
-      if (humanCount === 2) {
-        // console.log("🤑🤑🤑 Caching second-to-last human message");
-        addCache(cachedMessages[i]);
-        break;
-      }
-    }
   }
 
   return cachedMessages;
 }
 
 export async function submitQuestion(messages: BaseMessage[], chatId: string) {
-  console.log("submitQuestion");
+  // console.log("submitQuestion");
   const cachedMessages = addCachingHeaders(messages);
 
-  console.log("cachedMessages", cachedMessages);
+  // console.log("cachedMessages", cachedMessages);
   const workflow = createWorkflow();
 
   // Create a checkpoint to save the state of the conversation
   const checkpointer = new MemorySaver();
   const app = workflow.compile({ checkpointer });
 
-  console.log("messages before checkpointing:", messages);
-  console.log("chatId:", chatId);
+  // console.log("messages before checkpointing:", messages);
+  // console.log("chatId:", chatId);
 
   // Run the graph & stream
   const stream = await app.streamEvents(

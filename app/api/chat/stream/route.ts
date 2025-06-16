@@ -84,11 +84,12 @@ export async function POST(req: Request) {
 
         try {
           // Create the event stream
+           console.log("------------------- calling submitQuestion -------------------",);
           const eventStream = await submitQuestion(langChainMessages, chatId);
 
           // Process the events
           for await (const event of eventStream) {
-           
+            //console.log("------------------- event -------------------", event);
 
             if (event.event === "on_chat_model_stream") {
 
@@ -126,6 +127,7 @@ export async function POST(req: Request) {
           }
           // console.log("sent all messages");
           // Send completion message without storing the response
+          console.log("sending done")
           await sendSSEMessage(writer, { type: StreamMessageType.Done });
         } catch (streamError) {
           console.error("Error in event stream:", streamError);

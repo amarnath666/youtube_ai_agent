@@ -85,13 +85,12 @@ export default function ChatInterface({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    window.console.log("handleSubmit");
+   
     e.preventDefault();
     const trimmedInput = input.trim();
     if (!trimmedInput || isLoading) return;
 
-    console.log("trimmedInput", trimmedInput);
-
+  
     // Reset UI state for new message
     setInput("");
     setStreamedResponse("");
@@ -108,10 +107,10 @@ export default function ChatInterface({
       _creationTime: Date.now(),
     } as Doc<"messages">;
 
-    console.log("optimisticUserMessage", optimisticUserMessage);
+ 
     setMessages((prev) => [...prev, optimisticUserMessage]);
 
-    console.log("messages", messages);
+  
 
     // Track complete response for saving to database
     let fullResponse = "";
@@ -127,7 +126,7 @@ export default function ChatInterface({
         chatId,
       };
 
-      console.log("requestBody", requestBody);
+ 
 
       // Initialize SSE connection
       const response = await fetch("/api/chat/stream", {
@@ -139,25 +138,26 @@ export default function ChatInterface({
       if (!response.ok) throw new Error(await response.text());
       if (!response.body) throw new Error("No response body available");
 
-      console.log("response", response);
+   
 
       // Create SSE parser and stream reader
       const parser = createSSEParser();
-      console.log("parser", parser);
+
       const reader = response.body.getReader();
-      console.log("reader", reader);
+ 
 
       // Process the stream chunks
       await processStream(reader, async (chunk) => {
-        console.log("started processing stream");
+ 
         // Parse SSE messages from the chunk
         const messages = parser.parse(chunk);
-        console.log("messages from parser", messages);
+  
 
         // Handle each message based on its type
         for (const message of messages) {
           switch (message.type) {
             case StreamMessageType.Token:
+            
               // Handle streaming tokens (normal text response)
               if ("token" in message) {
                 fullResponse += message.token;
@@ -166,6 +166,7 @@ export default function ChatInterface({
               break;
 
             case StreamMessageType.ToolStart:
+          
               // Handle start of tool execution (e.g. API calls, file operations)
               if ("tool" in message) {
                 setCurrentTool({
@@ -182,6 +183,7 @@ export default function ChatInterface({
               break;
 
             case StreamMessageType.ToolEnd:
+             
               // Handle completion of tool execution
               if ("tool" in message && currentTool) {
                 // Replace the "Processing..." message with actual output
@@ -203,6 +205,7 @@ export default function ChatInterface({
               break;
 
             case StreamMessageType.Error:
+              
               // Handle error messages from the stream
               if ("error" in message) {
                 throw new Error(message.error);
@@ -222,14 +225,14 @@ export default function ChatInterface({
 
               // Save the complete message to the database
               const convex = getConvexClient();
-              console.log("storing the assistant message");
+             
               await convex.mutation(api.messages.store, {
                 chatId,
                 content: fullResponse,
                 role: "assistant",
               });
 
-               console.log("stored the message");
+        
 
               setMessages((prev) => [...prev, assistantMessage]);
               setStreamedResponse("");
