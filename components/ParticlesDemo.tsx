@@ -11,6 +11,7 @@ import { AnimatedShinyTextDemo } from "./AnimatedTextDemo";
 import CustomButton from "./CustomButton";
 import WhiteButton from "./WhiteButton";
 import { AuroraText } from "./magicui/aurora-text";
+import { NavbarDemo } from "./NavbarDemo";
 
 export function ParticlesDemo() {
   const { resolvedTheme } = useTheme();
@@ -21,24 +22,26 @@ export function ParticlesDemo() {
   }, [resolvedTheme]);
 
   return (
-    <div className="relative h-screen bg-zinc-900 ">
-      <HompageHeader />
-      <div className=" flex  w-full flex-col items-center overflow-hidden  pt-[100px]">
+    <div className="relative h-screen bg-zinc-900">
+      <NavbarDemo />
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-65px)] relative w-full">
         <AnimatedShinyTextDemo />
-        <span className="pointer-events-none z-10 whitespace-pre-wrap text-center text-8xl font-semibold leading-none bg-gradient-to-br from-white from-30% to-white/40 mt-[25px]    bg-clip-text text-transparent">
-           Turn YouTube Videos <br />
-          into <AuroraText>Smart Notes</AuroraText>
+        <span className="pointer-events-none z-10 whitespace-pre-wrap text-center text-8xl font-semibold leading-none bg-gradient-to-br from-white from-30% to-white/40 mt-[25px] bg-clip-text text-transparent">
+          Turn YouTube Videos <br />
+          into <span 
+          className="bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] bg-clip-text text-transparent">
+            Smart Notes</span>
         </span>
-
-        <p className="text-[20px] leading-snug   text-gray-500 text-center  pb-[25px] mt-[25px]">
+        <p className="text-[20px] leading-snug text-gray-400 text-center pb-[25px] mt-[25px]">
           Effortlessly convert any YouTube video into clear, concise notes.
           <br />
           Perfect for learning, revising, or sharing key takeaways — all in
           seconds.
         </p>
-       
-      <WhiteButton name="✨ Join Waitlist" onClick={() => console.log("clicked")} />
-    
+        <WhiteButton
+          name="✨ Join Waitlist"
+          onClick={() => console.log("clicked")}
+        />
         <Particles
           className="absolute inset-0 z-0"
           quantity={100}

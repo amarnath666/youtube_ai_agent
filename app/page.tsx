@@ -1,11 +1,29 @@
+import { NavbarDemo } from "@/components/NavbarDemo";
 import { ParticlesDemo } from "@/components/ParticlesDemo";
+import { CardDemo } from "@/components/ui/CardDemo";
+
+import HowItWorks from "@/components/ui/HowItWorks";
+import UseCases from "@/components/ui/UseCase";
+import UseCaseSections from "@/components/UseCaseSections";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function LandingPage() {
   return (
+    <div className="bg-zinc-900">
+   
     <ParticlesDemo />
+    <HowItWorks />
+    {/* <UseCases /> */}
+    <UseCaseSections />
+    {/* <div className="max-w-[1440px] py-[60px] gap-8 overflow-x-auto w-full mx-auto px-[60px] flex flex-row items-center justify-between">
+    <CardDemo />
+    <CardDemo />
+   <CardDemo />
+   <CardDemo />
+    </div> */}
+    </div>
   );
 }
 
