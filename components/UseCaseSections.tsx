@@ -145,38 +145,7 @@ const UseCaseSections = () => {
         </div>
 
         {/* Bottom CTA section */}
-        <div className="mt-24 text-center">
-          <div className="bg-gradient-to-r from-zinc-800/90 to-zinc-700/90 backdrop-blur-sm rounded-3xl p-16 border border-zinc-600/20"
-            style={{
-              boxShadow: `
-                0 8px 40px -5px rgba(0, 0, 0, 0.6),
-                0 15px 60px -10px rgba(0, 0, 0, 0.4),
-                0 25px 80px -15px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(255, 255, 255, 0.03),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.2)
-              `
-            }}
-          >
-            <h3 className="text-4xl font-bold text-white mb-6">
-              Ready to Transform Your Workflow?
-            </h3>
-            <p className="text-gray-300 text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-              Join thousands of professionals who are already using AI to enhance their productivity and creativity.
-            </p>
-            <button className="bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] text-white font-bold py-5 px-16 rounded-2xl text-xl transform hover:-translate-y-2 transition-all duration-400"
-              style={{
-                boxShadow: `
-                  0 6px 25px rgba(196, 113, 245, 0.3),
-                  0 12px 50px rgba(250, 113, 205, 0.2),
-                  0 0 0 1px rgba(255, 255, 255, 0.1)
-                `
-              }}
-            >
-              Start Your Journey
-            </button>
-          </div>
-        </div>
+       
       </div>
     </div>
   );

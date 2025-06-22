@@ -1,10 +1,6 @@
-import { Youtube, Download, MessageSquare, UserPlus } from "lucide-react";
+import { Download, UserPlus } from "lucide-react";
 import { LuBrain } from "react-icons/lu";
-import { TfiYoutube } from "react-icons/tfi";
-import { ImYoutube2 } from "react-icons/im";
 import { FaYoutube } from "react-icons/fa";
-import { FaDownload } from "react-icons/fa6";
-
 
 const HowItWorks = () => {
   const steps = [
@@ -15,6 +11,7 @@ const HowItWorks = () => {
         "Create your account to get started with AI-powered YouTube video note generation. Quick and easy registration process.",
       icon: UserPlus,
       delay: "0ms",
+      gradient: "from-purple-500 to-pink-500",
     },
     {
       number: "02",
@@ -23,6 +20,7 @@ const HowItWorks = () => {
         "Paste any YouTube video URL and let our AI begin processing. We support videos of all lengths and topics.",
       icon: FaYoutube,
       delay: "200ms",
+      gradient: "from-blue-500 to-purple-500",
     },
     {
       number: "03",
@@ -31,6 +29,7 @@ const HowItWorks = () => {
         "Wait while our AI transcribes and analyzes your video content. We extract key insights and create comprehensive notes.",
       icon: LuBrain,
       delay: "400ms",
+      gradient: "from-cyan-500 to-blue-500",
     },
     {
       number: "04",
@@ -39,11 +38,12 @@ const HowItWorks = () => {
         "Download organized notes in your preferred format—TXT, PDF, CSV, SRT, or VTT—for easy studying, sharing, or reviewing later.",
       icon: Download,
       delay: "600ms",
+      gradient: "from-green-500 to-cyan-500",
     },
   ];
 
   return (
-    <section className="py-[60px] px-[60px] bg-zinc-900 max-w-[1440px] mx-auto w-full">
+    <section className="py-[60px] px-[60px] bg-zinc-900 max-w-[1440px] mx-auto w-full ">
       <div className="">
         {/* Header */}
         <div className="text-center mb-[60px]">
@@ -53,11 +53,11 @@ const HowItWorks = () => {
               Works
             </span>
           </h2>
-           <p className="text-[20px] leading-snug text-gray-400 text-center ">
-          Transform any YouTube video into comprehensive, AI-generated notes in just four simple steps. 
-          <br />
-          Perfect for students, researchers, and content creators.
-        </p>
+          <p className="text-[20px] leading-snug text-gray-400 text-center ">
+            Transform any YouTube video into comprehensive,
+            <br />
+            AI-generated notes in just four simple steps.
+          </p>
         </div>
 
         {/* Steps Grid */}
@@ -65,11 +65,15 @@ const HowItWorks = () => {
           {steps.map((step, index) => {
             const IconComponent = step.icon;
             return (
-              <div className="relative h-full flex flex-col bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 rounded-2xl p-8 hover:bg-zinc-800/70 transition-all duration-500 hover:scale-105 hover:border-zinc-600/50 group">
+              <div
+                className="relative h-full flex flex-col bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 rounded-2xl p-8 hover:bg-zinc-800/70 transition-all duration-500 hover:scale-105 hover:border-zinc-600/50 group   before:absolute before:bottom-0 before:left-0 before:w-full before:h-1/2 before:bg-gradient-to-t before:from-[#c471f5]/20 before:to-transparent before:rounded-2xl before:z-0
+
+"
+              >
                 {/* Step Number */}
-                <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                {/* <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
                   {step.number}
-                </div>
+                </div> */}
 
                 {/* Icon */}
                 <div className="mb-6 flex justify-center">
@@ -91,9 +95,18 @@ const HowItWorks = () => {
             );
           })}
         </div>
+      </div>
+    </section>
+  );
+};
 
-        {/* Bottom CTA */}
-        {/* <div className="text-center">
+export default HowItWorks;
+
+{
+  /* Bottom CTA */
+}
+{
+  /* <div className="text-center">
           <div className="inline-flex items-center gap-4 bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 rounded-2xl p-8">
             <div className="w-12 h-12 bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] rounded-full flex items-center justify-center">
               <Youtube className="w-6 h-6 text-white" />
@@ -108,16 +121,15 @@ const HowItWorks = () => {
               </p>
             </div>
           </div>
-        </div> */}
+        </div> */
+}
 
-        {/* Decorative Elements */}
-        {/* <div className="absolute inset-0 overflow-hidden pointer-events-none">
+{
+  /* Decorative Elements */
+}
+{
+  /* <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 left-10 w-32 h-32 bg-gradient-to-r from-[#c471f5] to-[#fa71cd] rounded-full opacity-10 blur-3xl " />
           <div className="absolute bottom-1/4 right-10 w-40 h-40 bg-gradient-to-r from-[#fa71cd] to-[#fda085] rounded-full opacity-10 blur-3xl " style={{ animationDelay: '1s' }} />
-        </div> */}
-      </div>
-    </section>
-  );
-};
-
-export default HowItWorks;
+        </div> */
+}

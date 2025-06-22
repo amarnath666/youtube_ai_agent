@@ -17,16 +17,16 @@ import { useState } from "react";
 export function NavbarDemo() {
   const navItems = [
     {
+      name: "Home",
+      link: "#",
+    },
+    {
+      name: "How It Works",
+      link: "#",
+    },
+    {
       name: "Features",
-      link: "#features",
-    },
-    {
-      name: "Pricing",
-      link: "#pricing",
-    },
-    {
-      name: "Contact",
-      link: "#contact",
+      link: "#",
     },
   ];
 

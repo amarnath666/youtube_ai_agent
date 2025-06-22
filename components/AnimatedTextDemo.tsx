@@ -3,7 +3,7 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { AnimatedShinyText } from "@/components/magicui/animated-shiny-text";
 
-export function AnimatedShinyTextDemo() {
+export function AnimatedShinyTextDemo({ name }: { name: string }) {
   return (
     <div className="z-10 flex  items-center justify-center">
       <div
@@ -12,7 +12,7 @@ export function AnimatedShinyTextDemo() {
         )}
       >
         <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
-          <span>✨ Introducing YT Notes</span>
+          <span>{name}</span>
           <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
         </AnimatedShinyText>
       </div>

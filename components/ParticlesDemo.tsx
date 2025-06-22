@@ -22,10 +22,10 @@ export function ParticlesDemo() {
   }, [resolvedTheme]);
 
   return (
-    <div className="relative h-screen bg-zinc-900">
+    <div className="relative h-screen bg-zinc-900 before:absolute before:top-0 before:left-0 before:w-full before:h-1/2 before:bg-gradient-to-b before:from-[#c471f5]/20 before:to-transparent before:content-[''] rounded-b-[25px]">
       <NavbarDemo />
       <div className="flex flex-col items-center justify-center h-[calc(100vh-65px)] relative w-full">
-        <AnimatedShinyTextDemo />
+        <AnimatedShinyTextDemo name={"✨ AI Powered Notes"} />
         <span className="pointer-events-none z-10 whitespace-pre-wrap text-center text-8xl font-semibold leading-none bg-gradient-to-br from-white from-30% to-white/40 mt-[25px] bg-clip-text text-transparent">
           Turn YouTube Videos <br />
           into <span 
