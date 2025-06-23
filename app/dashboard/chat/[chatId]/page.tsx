@@ -2,7 +2,7 @@ import ChatInterface from "@/components/ChatInterface"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { getConvexClient } from "@/lib/convex"
-import { auth } from "@clerk/nextjs/server"
+// import { auth } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 
 interface ChatPageParams {
@@ -13,11 +13,11 @@ interface ChatPageParams {
 
 const ChatPage =  async ({ params }: ChatPageParams) => {
     const {chatId} = await params
-    const { userId } = await auth()
+    // const { userId } = await auth()
 
-    if (!userId) {
-        redirect("/")
-    }
+    // if (!userId) {
+    //     redirect("/")
+    // }
 
     const convex = await getConvexClient()
 

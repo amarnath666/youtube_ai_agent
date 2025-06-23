@@ -1,7 +1,6 @@
 
 import CustomButton from "./CustomButton"
 
-
 const HompageHeader = () => {
   return (
     <header>

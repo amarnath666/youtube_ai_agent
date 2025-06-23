@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.31.9",
-    "@clerk/nextjs": "^6.21.0",
+    "@clerk/nextjs": "^6.22.0",
+    "@convex-dev/auth": "^0.0.87",
     "@langchain/community": "^0.3.46",
     "@langchain/core": "^0.3.58",
     "@langchain/deepseek": "^0.0.2",
@@ -26,10 +26,12 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.24.8",
+    "convex-helpers": "^0.1.95",
     "framer-motion": "^12.18.1",
     "lucide-react": "^0.513.0",
     "motion": "^12.18.1",
     "next": "15.3.3",
+    "next-auth": "^4.24.11",
     "next-themes": "^0.4.6",
     "postcss": "^8.5.4",
     "radix-ui": "^1.4.2",

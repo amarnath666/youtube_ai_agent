@@ -1,19 +1,15 @@
-import { NavbarDemo } from "@/components/NavbarDemo";
+"use client";
+
 import { ParticlesDemo } from "@/components/ParticlesDemo";
-import { CardDemo } from "@/components/ui/CardDemo";
+import { SessionProvider } from "next-auth/react"
 import Features from "@/components/ui/Features";
 import Footer from "@/components/ui/Footet";
-
 import HowItWorks from "@/components/ui/HowItWorks";
 import Support from "@/components/ui/Support";
 
-import UseCaseSections from "@/components/UseCaseSections";
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-
 export default function LandingPage() {
   return (
+    <SessionProvider>
     <div className="bg-zinc-900">
       <ParticlesDemo />
       <Features />
@@ -21,6 +17,7 @@ export default function LandingPage() {
       <Support />
       <Footer />
     </div>
+    </SessionProvider>
   );
 }
 

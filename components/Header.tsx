@@ -1,6 +1,6 @@
 "use client";
 
-import { UserButton } from "@clerk/nextjs";
+// import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useNavigation } from "@/lib/context/navigation";
@@ -9,8 +9,6 @@ import { use } from "react";
 
 export default function Header() {
    const { setIsMobileNavOpen } = use(NavigationContext)
-
-
 
   return (
     <header className="border-b border-gray-200/50 bg-white/80 backdrop-blur-xl sticky top-0 z-50">
@@ -29,7 +27,7 @@ export default function Header() {
           </div>
         </div>
         <div className="flex items-center">
-          <UserButton
+          {/* <UserButton
             afterSignOutUrl="/"
             appearance={{
               elements: {
@@ -37,7 +35,7 @@ export default function Header() {
                   "h-8 w-8 ring-2 ring-gray-200/50 ring-offset-2 rounded-full transition-shadow hover:ring-gray-300/50",
               },
             }}
-          />
+          /> */}
         </div>
       </div>
     </header>

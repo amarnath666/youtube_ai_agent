@@ -1,7 +1,7 @@
 import { submitQuestion } from "@/lib/langgraph";
 import { api } from "@/convex/_generated/api";
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
+import { authOptions } from "../../auth/[...nextauth]";
 import { AIMessage, HumanMessage, ToolMessage } from "@langchain/core/messages";
 import { getConvexClient } from "@/lib/convex";
 import {
@@ -11,6 +11,7 @@ import {
   SSE_DATA_PREFIX,
   SSE_LINE_DELIMITER,
 } from "@/lib/types";
+import { getServerSession } from "next-auth";
 
 export const runtime = "edge";
 
@@ -29,17 +30,22 @@ function sendSSEMessage(
 export async function POST(req: Request) {
   // console.log("started POST route");
   try {
-    const { userId } = await auth();
-    
-    if (!userId) {
-      return new Response("Unauthorized", { status: 401 });
-    }
+    // const { userId } = await auth();
+
+    // if (!userId) {
+    //   return new Response("Unauthorized", { status: 401 });
+    // }
+
+    // const session = await getServerSession(authOptions);
+    // if (!session) {
+    //   return new Response("Unauthorized", { status: 401 });
+    // }
 
     const { messages, newMessage, chatId } =
       (await req.json()) as ChatRequestBody;
-      // console.log("messages from next route", messages);
-      // console.log("newMessage from next route", newMessage);
-      // console.log("chatId from next route", chatId);
+    // console.log("messages from next route", messages);
+    // console.log("newMessage from next route", newMessage);
+    // console.log("chatId from next route", chatId);
 
     const convex = getConvexClient();
 
@@ -52,7 +58,7 @@ export async function POST(req: Request) {
     const response = new Response(stream.readable, {
       headers: {
         "Content-Type": "text/event-stream",
-    
+
         Connection: "keep-alive",
         "X-Accel-Buffering": "no", // Disable buffering for nginx which is required for SSE to work properly
       },
@@ -84,7 +90,9 @@ export async function POST(req: Request) {
 
         try {
           // Create the event stream
-           console.log("------------------- calling submitQuestion -------------------",);
+          console.log(
+            "------------------- calling submitQuestion -------------------"
+          );
           const eventStream = await submitQuestion(langChainMessages, chatId);
 
           // Process the events
@@ -92,9 +100,8 @@ export async function POST(req: Request) {
             //console.log("------------------- event -------------------", event);
 
             if (event.event === "on_chat_model_stream") {
-
               const token = event.data.chunk;
-              
+
               if (token) {
                 // Access the text property from the AIMessageChunk
                 const text = token.content;
@@ -127,7 +134,7 @@ export async function POST(req: Request) {
           }
           // console.log("sent all messages");
           // Send completion message without storing the response
-          console.log("sending done")
+          console.log("sending done");
           await sendSSEMessage(writer, { type: StreamMessageType.Done });
         } catch (streamError) {
           console.error("Error in event stream:", streamError);

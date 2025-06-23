@@ -11,10 +11,12 @@ import {
   MobileNavToggle,
   MobileNavMenu,
 } from "./resizableNavbar";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
 export function NavbarDemo() {
+  const router = useRouter();
   const navItems = [
     {
       name: "Home",
@@ -40,9 +42,9 @@ export function NavbarDemo() {
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
-            <NavbarButton variant="secondary">Login</NavbarButton>
+            <NavbarButton variant="secondary" onClick={() => router.push("/dashboard")}>Login</NavbarButton>
             {/* <NavbarButton variant="primary">Book a call</NavbarButton> */}
-              <CustomButton name="Join Waitlist" onClick={() => console.log("clicked")} />
+              <CustomButton name="Join Waitlist" onClick={() => router.push("/dashboard")} />
           </div>
         </NavBody>
 
