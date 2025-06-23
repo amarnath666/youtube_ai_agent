@@ -24,7 +24,7 @@ export const createSSEParser = () => {
         const trimmed = line.trim();
         if (!trimmed || !trimmed.startsWith(SSE_DATA_PREFIX)) return null;
 
-        const data = trimmed.substring(SSE_DATA_PREFIX.length);
+        const data = trimmed?.substring(SSE_DATA_PREFIX.length);
         if (data === SSE_DONE_MESSAGE) return { type: StreamMessageType.Done };
 
         try {

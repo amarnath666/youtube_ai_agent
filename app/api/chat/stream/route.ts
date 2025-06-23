@@ -1,7 +1,6 @@
 import { submitQuestion } from "@/lib/langgraph";
 import { api } from "@/convex/_generated/api";
 import { NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]";
 import { AIMessage, HumanMessage, ToolMessage } from "@langchain/core/messages";
 import { getConvexClient } from "@/lib/convex";
 import {
@@ -11,7 +10,10 @@ import {
   SSE_DATA_PREFIX,
   SSE_LINE_DELIMITER,
 } from "@/lib/types";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next"
+import dbConnect from '@/lib/mongoose'
+import { authOptions } from "../../auth/[...nextauth]/route"
+import Message from "@/models/message";
 
 export const runtime = "edge";
 
@@ -30,30 +32,25 @@ function sendSSEMessage(
 export async function POST(req: Request) {
   // console.log("started POST route");
   try {
-    // const { userId } = await auth();
+    console.log("started POST route");
+    const session = await getServerSession(authOptions);
 
-    // if (!userId) {
-    //   return new Response("Unauthorized", { status: 401 });
-    // }
-
-    // const session = await getServerSession(authOptions);
-    // if (!session) {
-    //   return new Response("Unauthorized", { status: 401 });
-    // }
+    if (!session) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
     const { messages, newMessage, chatId } =
       (await req.json()) as ChatRequestBody;
     // console.log("messages from next route", messages);
     // console.log("newMessage from next route", newMessage);
-    // console.log("chatId from next route", chatId);
-
-    const convex = getConvexClient();
+    console.log("chatId from next route", chatId);
 
     // Create stream with larger queue strategy for better performance
     const stream = new TransformStream({}, { highWaterMark: 1024 });
     // console.log("stream", stream);
     const writer = stream.writable.getWriter();
     // console.log("writer", writer);
+    console.log("writer", writer);
 
     const response = new Response(stream.readable, {
       headers: {
@@ -64,19 +61,31 @@ export async function POST(req: Request) {
       },
     });
 
+    console.log("response from next route", response);
+    await dbConnect();
+    console.log("connected to db");
+
     // console.log("response from next route", response);
 
     // Handle the streaming response
     (async () => {
       try {
+        console.log("streaming response");
         // Send initial connection established message
         await sendSSEMessage(writer, { type: StreamMessageType.Connected });
-
+        console.log("sent connected message");
         // Send user message to Convex
-        await convex.mutation(api.messages.send, {
-          chatId,
-          content: newMessage,
-        });
+        // await convex.mutation(api.messages.send, {
+        //   chatId,
+        //   content: newMessage,
+        // });
+
+        await Message.create({
+            chatId,
+            content: newMessage,
+            role: "user",
+          }); 
+          console.log("message created");
 
         // Convert messages to LangChain format
         const langChainMessages = [

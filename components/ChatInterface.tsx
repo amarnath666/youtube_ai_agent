@@ -10,6 +10,7 @@ import { MessageBubble } from "@/components/MessageBubble";
 import { ArrowRight } from "lucide-react";
 import { getConvexClient } from "@/lib/convex";
 import { api } from "@/convex/_generated/api";
+import axios from "axios";
 
 interface ChatInterfaceProps {
   chatId: Id<"chats">;
@@ -155,12 +156,15 @@ export default function ChatInterface({
 
         // Handle each message based on its type
         for (const message of messages) {
+      
           switch (message.type) {
             case StreamMessageType.Token:
             
               // Handle streaming tokens (normal text response)
               if ("token" in message) {
+                
                 fullResponse += message.token;
+                console.log("fullResponse", fullResponse);
                 setStreamedResponse(fullResponse);
               }
               break;
@@ -173,6 +177,7 @@ export default function ChatInterface({
                   name: message.tool,
                   input: message.input,
                 });
+                console.log("fullResponse", fullResponse);
                 fullResponse += formatTerminalOutput(
                   message.tool,
                   message.input,
@@ -187,12 +192,14 @@ export default function ChatInterface({
               // Handle completion of tool execution
               if ("tool" in message && currentTool) {
                 // Replace the "Processing..." message with actual output
+                console.log("fullResponse", fullResponse);
                 const lastTerminalIndex = fullResponse.lastIndexOf(
                   '<div class="bg-[#1e1e1e]'
                 );
                 if (lastTerminalIndex !== -1) {
+                  console.log("fullResponse", fullResponse);
                   fullResponse =
-                    fullResponse.substring(0, lastTerminalIndex) +
+                    fullResponse?.substring(0, lastTerminalIndex) +
                     formatTerminalOutput(
                       message.tool,
                       currentTool.input,
@@ -225,14 +232,13 @@ export default function ChatInterface({
 
               // Save the complete message to the database
               const convex = getConvexClient();
-             
-              await convex.mutation(api.messages.store, {
+
+              // call nextjs api to store message
+              const res = await axios.post("/api/message/store", {
                 chatId,
                 content: fullResponse,
                 role: "assistant",
               });
-
-        
 
               setMessages((prev) => [...prev, assistantMessage]);
               setStreamedResponse("");

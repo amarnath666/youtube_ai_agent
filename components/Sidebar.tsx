@@ -11,23 +11,45 @@ import { cn } from "@/lib/utils";
 import { useNavigation, NavigationContext } from "@/lib/context/navigation";
 import { use } from "react";
 import ChatRow from "./ChatRow";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Sidebar() {
   const router = useRouter();
   const { isMobileNavOpen, closeMobileNav } = use(NavigationContext);
+  const [chats, setChats] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-const chats = useQuery(api.chat.listChats);
-const createChat = useMutation(api.chat.createChat);
-const deleteChat = useMutation(api.chat.deleteChat);
+  useEffect(() => {
+    const fetchChats = async () => {
+      setIsLoading(true);
+      const response = await axios.get("/api/chat");
+      setChats(response.data);
+      setIsLoading(false);
+    };
+    fetchChats();
+  }, []);
+
+// const chats = useQuery(api.chat.listChats);
+// const createChat = useMutation(api.chat.createChat);
+// const deleteChat = useMutation(api.chat.deleteChat);
 
   const handleNewChat = async () => {
-    const chatId = await createChat({ title: "New Chat" });
+    const chatId = await axios.post("/api/chat", {
+      title: "New Chat",
+    });
     router.push(`/dashboard/chat/${chatId}`);
     closeMobileNav();
-  };
+  }
+
+  // const handleNewChat = async () => {
+  //   // const chatId = await createChat({ title: "New Chat" });
+  //   // router.push(`/dashboard/chat/${chatId}`);
+  //   closeMobileNav();
+  // };
 
   const handleDeleteChat = async (id: Id<"chats">) => {
-    await deleteChat({ id });
+    // await deleteChat({ id });
     // If we're currently viewing this chat, redirect to dashboard
     if (window.location.pathname.includes(id)) {
       router.push("/dashboard");

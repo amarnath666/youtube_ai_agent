@@ -6,6 +6,7 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useNavigation } from "@/lib/context/navigation";
 import { NavigationContext } from "@/lib/context/navigation";
 import { use } from "react";
+import { signOut } from "next-auth/react";
 
 export default function Header() {
    const { setIsMobileNavOpen } = use(NavigationContext)
@@ -27,15 +28,9 @@ export default function Header() {
           </div>
         </div>
         <div className="flex items-center">
-          {/* <UserButton
-            afterSignOutUrl="/"
-            appearance={{
-              elements: {
-                avatarBox:
-                  "h-8 w-8 ring-2 ring-gray-200/50 ring-offset-2 rounded-full transition-shadow hover:ring-gray-300/50",
-              },
-            }}
-          /> */}
+         <button className="bg-gray-100 hover:bg-gray-200 rounded-full p-2 text-gray-500 transition-all duration-200"   onClick={() => signOut({ callbackUrl: "/" })}>
+            Logout
+          </button>
         </div>
       </div>
     </header>

@@ -1,8 +1,10 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { AuthOptions, SessionStrategy } from "next-auth";
+import dbConnect from "@/lib/mongoose";
+import User from "@/models/user";
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -10,37 +12,49 @@ export const authOptions = {
     }),
   ],
   session: {
-    strategy: "jwt" as SessionStrategy, // ✅ explicitly type it
+    strategy: "jwt" as SessionStrategy,
   },
   callbacks: {
-    async jwt({ token, account, profile } : { token: any, account: any, profile: any }) {
-      // Add custom fields to token
-      if (account && profile) {
-        token.id = profile.sub;
-        token.name = profile.name;
-        token.email = profile.email;
-        token.picture = profile.picture;
-      }
-      return token;
-    },
-    async session({ session, token } : { session: any, token: any }) {
-      if (token) {
-        session.user = {
-          id: token.id,
-          name: token.name,
-          email: token.email,
-          image: token.picture,
-        };
-        // 👇 expose token so frontend can forward to Convex
-        session.token = token;
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub!;
       }
       return session;
     },
+    jwt: async ({ user, token }) => {
+      await dbConnect();
+
+      if (user) {
+        const dbUser = await User.findOne({ email: user.email });
+
+        if (dbUser) {
+          token.sub = dbUser._id.toString(); // ✅ Use MongoDB _id
+        }
+      }
+
+      return token;
+    },
+    async signIn({ user, account }) {
+      await dbConnect();
+      // Only run on first sign in
+      const existingUser = await User.findOne({ email: user.email });
+
+      if (!existingUser) {
+        await User.create({
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          googleId: account?.providerAccountId, // optional
+        });
+      }
+
+      return true;
+    },
   },
-    pages: {
-    signIn: "/signin", // 👈 Add this line
+  pages: {
+    signIn: "/signin",
   },
-    secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
