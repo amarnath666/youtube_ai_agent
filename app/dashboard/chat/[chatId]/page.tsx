@@ -18,13 +18,13 @@ interface ChatPageParams {
 const ChatPage =   ({ params }: ChatPageParams) => {
     const {chatId} =  params
   
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState<any>([])
 
     useEffect(() => {
       const fetchMessages = async () => {
         const res = await axios.get(`/api/message?chatId=${chatId}`)
         setMessages(res.data)
-        console.log("messages", messages)
+      
       }
       fetchMessages()
     }, []);
@@ -38,6 +38,8 @@ const ChatPage =   ({ params }: ChatPageParams) => {
     // const convex = await getConvexClient()
 
     // const initialMessages = await convex.query(api.messages.list , { chatId })
+
+    console.log("messages", messages)
   return (
     <div className="flex-1 overflow-hidden">
         <ChatInterface chatId={chatId} initialMessages={messages} />

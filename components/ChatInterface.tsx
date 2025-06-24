@@ -11,6 +11,7 @@ import { ArrowRight } from "lucide-react";
 import { getConvexClient } from "@/lib/convex";
 import { api } from "@/convex/_generated/api";
 import axios from "axios";
+import {  formatYouTubeEmbedOutput } from "@/lib/helper";
 
 interface ChatInterfaceProps {
   chatId: Id<"chats">;
@@ -35,35 +36,10 @@ export default function ChatInterface({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, streamedResponse]);
 
-  const formatToolOutput = (output: unknown): string => {
-    if (typeof output === "string") return output;
-    return JSON.stringify(output, null, 2);
-  };
+    useEffect(() => {
+    setMessages(initialMessages);
+  }, [initialMessages]);
 
-  const formatTerminalOutput = (
-    tool: string,
-    input: unknown,
-    output: unknown
-  ) => {
-    const terminalHtml = `<div class="bg-[#1e1e1e] text-white font-mono p-2 rounded-md my-2 overflow-x-auto whitespace-normal max-w-[600px]">
-      <div class="flex items-center gap-1.5 border-b border-gray-700 pb-1">
-        <span class="text-red-500">●</span>
-        <span class="text-yellow-500">●</span>
-        <span class="text-green-500">●</span>
-        <span class="text-gray-400 ml-1 text-sm">~/${tool}</span>
-      </div>
-      <div class="text-gray-400 mt-1">$ Input</div>
-      <pre class="text-yellow-400 mt-0.5 whitespace-pre-wrap overflow-x-auto">${formatToolOutput(
-        input
-      )}</pre>
-      <div class="text-gray-400 mt-2">$ Output</div>
-      <pre class="text-green-400 mt-0.5 whitespace-pre-wrap overflow-x-auto">${formatToolOutput(
-        output
-      )}</pre>
-    </div>`;
-
-    return `---START---\n${terminalHtml}\n---END---`;
-  };
 
   /**
    * Processes a ReadableStream from the SSE response.
@@ -164,13 +140,13 @@ export default function ChatInterface({
               if ("token" in message) {
                 
                 fullResponse += message.token;
-                console.log("fullResponse", fullResponse);
+                
                 setStreamedResponse(fullResponse);
               }
               break;
 
             case StreamMessageType.ToolStart:
-          
+             
               // Handle start of tool execution (e.g. API calls, file operations)
               if ("tool" in message) {
                 setCurrentTool({
@@ -178,7 +154,7 @@ export default function ChatInterface({
                   input: message.input,
                 });
                 console.log("fullResponse", fullResponse);
-                fullResponse += formatTerminalOutput(
+                fullResponse += formatYouTubeEmbedOutput(
                   message.tool,
                   message.input,
                   "Processing..."
@@ -192,15 +168,15 @@ export default function ChatInterface({
               // Handle completion of tool execution
               if ("tool" in message && currentTool) {
                 // Replace the "Processing..." message with actual output
-                console.log("fullResponse", fullResponse);
+             
                 const lastTerminalIndex = fullResponse.lastIndexOf(
                   '<div class="bg-[#1e1e1e]'
                 );
                 if (lastTerminalIndex !== -1) {
-                  console.log("fullResponse", fullResponse);
+              
                   fullResponse =
                     fullResponse?.substring(0, lastTerminalIndex) +
-                    formatTerminalOutput(
+                    formatYouTubeEmbedOutput(
                       message.tool,
                       currentTool.input,
                       message.output
@@ -254,7 +230,7 @@ export default function ChatInterface({
         prev.filter((msg) => msg._id !== optimisticUserMessage._id)
       );
       setStreamedResponse(
-        formatTerminalOutput(
+        formatYouTubeEmbedOutput(
           "error",
           "Failed to process message",
           error instanceof Error ? error.message : "Unknown error"
@@ -268,9 +244,9 @@ export default function ChatInterface({
   return (
     <main className="flex flex-col h-[calc(100vh-theme(spacing.14))]">
       {/* Messages container */}
-      <section className="flex-1 overflow-y-auto bg-gray-50 p-2 md:p-0">
+      <section className="flex-1 overflow-y-auto bg-zinc-800 p-2 md:p-0">
         <div className="max-w-4xl mx-auto p-4 space-y-3">
-          {messages?.length === 0 && <WelcomeMessage />}
+          {/* {messages?.length === 0 && <WelcomeMessage />} */}
 
           {messages?.map((message: Doc<"messages">) => (
             <MessageBubble
@@ -303,7 +279,7 @@ export default function ChatInterface({
       </section>
 
       {/* Input form */}
-      <footer className="border-t bg-white p-4">
+      <footer className="border-t bg-zinc-800 p-4">
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto relative">
           <div className="relative flex items-center">
             <input
@@ -311,7 +287,7 @@ export default function ChatInterface({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Message AI Agent..."
-              className="flex-1 py-3 px-4 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12 bg-gray-50 placeholder:text-gray-500"
+              className="flex-1 py-3 px-4 rounded-2xl border   pr-12 bg-zinc-800 placeholder:text-white"
               disabled={isLoading}
             />
             <Button

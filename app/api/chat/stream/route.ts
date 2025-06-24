@@ -13,9 +13,9 @@ import {
 import { getServerSession } from "next-auth/next"
 import dbConnect from '@/lib/mongoose'
 import { authOptions } from "../../auth/[...nextauth]/route"
-import Message from "@/models/message";
+import message from "@/models/message";
 
-export const runtime = "edge";
+
 
 function sendSSEMessage(
   writer: WritableStreamDefaultWriter<Uint8Array>,
@@ -35,9 +35,9 @@ export async function POST(req: Request) {
     console.log("started POST route");
     const session = await getServerSession(authOptions);
 
-    if (!session) {
-      return new Response("Unauthorized", { status: 401 });
-    }
+        if (!session) {
+          return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
 
     const { messages, newMessage, chatId } =
       (await req.json()) as ChatRequestBody;
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
         //   content: newMessage,
         // });
 
-        await Message.create({
+        await message.create({
             chatId,
             content: newMessage,
             role: "user",

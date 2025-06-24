@@ -35,9 +35,11 @@ export default function Sidebar() {
 // const deleteChat = useMutation(api.chat.deleteChat);
 
   const handleNewChat = async () => {
-    const chatId = await axios.post("/api/chat", {
+    const res = await axios.post("/api/chat", {
       title: "New Chat",
     });
+   
+    const chatId = res.data.chatId;
     router.push(`/dashboard/chat/${chatId}`);
     closeMobileNav();
   }
@@ -68,11 +70,11 @@ export default function Sidebar() {
 
       <div
         className={cn(
-          "fixed md:inset-y-0 top-14 bottom-0 left-0 z-50 w-72 bg-gray-50/80 backdrop-blur-xl border-r border-gray-200/50 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:top-0 flex flex-col",
+          "fixed md:inset-y-0 top-14 bottom-0 left-0 z-50 w-72 bg-zinc-900 backdrop-blur-xl border-r border-gray-200/50 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:top-0 flex flex-col",
           isMobileNavOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="p-4 border-b border-gray-200/50">
+        <div className="p-4 ">
           <Button
             onClick={handleNewChat}
             className="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-200/50 shadow-sm hover:shadow transition-all duration-200"
@@ -82,6 +84,7 @@ export default function Sidebar() {
         </div>
 
         <div className="flex-1 overflow-y-auto space-y-2.5 p-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+          <p className=" text-gray-300 text-sm">Chats</p>
           {chats?.map((chat) => (
             <ChatRow key={chat._id} chat={chat} onDelete={handleDeleteChat} />
           ))}

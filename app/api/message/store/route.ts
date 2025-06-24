@@ -16,6 +16,8 @@ export async function POST(req: Request) {
 
     const { chatId, content, role } = await req.json();
 
+    console.log(content, chatId, role, "req body");
+
     // Store message with preserved newlines and HTML
     const message = await Message.create({
       chatId,

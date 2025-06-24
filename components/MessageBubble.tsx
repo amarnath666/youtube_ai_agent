@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // import { useUser } from "@clerk/nextjs";
 import { BotIcon } from "lucide-react";
 
+
 interface MessageBubbleProps {
   content: string;
   isUser?: boolean;
@@ -27,15 +28,15 @@ export function MessageBubble({ content, isUser }: MessageBubbleProps) {
   // const { user } = useUser();
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+    <div className={`flex bg-zinc-800 ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`rounded-2xl px-4 py-2.5 max-w-[85%] md:max-w-[75%] shadow-sm ring-1 ring-inset relative ${
+        className={`rounded-2xl bg-zinc-900  px-4 py-2.5 max-w-[85%] md:max-w-[75%] shadow-sm  relative ${
           isUser
-            ? "bg-blue-600 text-white rounded-br-none ring-blue-700"
-            : "bg-white text-gray-900 rounded-bl-none ring-gray-200"
+            ? "bg-blue-600 text-white rounded-br-none "
+            : "bg-white text-gray-900 rounded-bl-none "
         }`}
       >
-        <div className="whitespace-pre-wrap text-[15px] leading-relaxed">
+        <div className="whitespace-pre-wrap text-[15px] leading-relaxed text-white">
           <div dangerouslySetInnerHTML={{ __html: formatMessage(content) }} />
         </div>
         <div
