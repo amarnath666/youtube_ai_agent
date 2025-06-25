@@ -1,5 +1,5 @@
 export const extractYouTubeId = (url: string): string | null => {
-    console.log("url", url);
+  console.log("url", url);
   const regex =
     /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([a-zA-Z0-9_-]{11})/;
   const match = url.match(regex);
@@ -17,30 +17,30 @@ export const formatYouTubeEmbedOutput = (
   input: any,
   output: any
 ) => {
-    console.log("input", input);
+  console.log("input", input);
   let videoUrl = "";
 
   try {
-  let parsed = typeof input === "string" ? JSON.parse(input) : input;
+    let parsed = typeof input === "string" ? JSON.parse(input) : input;
     console.log("parsed", parsed);
-  // If it's still wrapped inside an `input` key, unwrap and parse again
-  if (parsed?.input && typeof parsed.input === "string") {
-    parsed = JSON.parse(parsed.input);
-    console.log("parsed again", parsed);
-  }
+    // If it's still wrapped inside an `input` key, unwrap and parse again
+    if (parsed?.input && typeof parsed.input === "string") {
+      parsed = JSON.parse(parsed.input);
+      console.log("parsed again", parsed);
+    }
 
-  videoUrl = parsed?.url || "";
-  console.log("videoUrl", videoUrl);
-} catch (err) {
-  return `<div class="text-red-500">Invalid input format</div>`;
-}
+    videoUrl = parsed?.url || "";
+    console.log("videoUrl", videoUrl);
+  } catch (err) {
+    return `<div class="text-red-500">Invalid input format</div>`;
+  }
 
   const videoId = extractYouTubeId(videoUrl);
   console.log("videoId", videoId);
   if (!videoId) return `<div class="text-red-500">Invalid YouTube URL</div>`;
 
   return `---START---
-<div class=" max-w-[600px]">
+<div class=" ]">
   <iframe 
     class="w-auto h-auto max-h-[200px] rounded-md shadow-md"
     src="https://www.youtube.com/embed/${videoId}" 

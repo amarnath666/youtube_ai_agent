@@ -154,11 +154,11 @@ export default function ChatInterface({
                   input: message.input,
                 });
                 console.log("fullResponse", fullResponse);
-                fullResponse += formatYouTubeEmbedOutput(
-                  message.tool,
-                  message.input,
-                  "Processing..."
-                );
+                // fullResponse += formatYouTubeEmbedOutput(
+                //   message.tool,
+                //   message.input,
+                //   ""
+                // );
                 setStreamedResponse(fullResponse);
               }
               break;
@@ -174,13 +174,13 @@ export default function ChatInterface({
                 );
                 if (lastTerminalIndex !== -1) {
               
-                  fullResponse =
-                    fullResponse?.substring(0, lastTerminalIndex) +
-                    formatYouTubeEmbedOutput(
-                      message.tool,
-                      currentTool.input,
-                      message.output
-                    );
+                  // fullResponse =
+                  //   fullResponse?.substring(0, lastTerminalIndex) +
+                  //   formatYouTubeEmbedOutput(
+                  //     message.tool,
+                  //     currentTool.input,
+                  //     message.output
+                  //   );
                   setStreamedResponse(fullResponse);
                 }
                 setCurrentTool(null);

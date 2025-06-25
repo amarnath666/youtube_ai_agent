@@ -6,6 +6,7 @@ import Features from "@/components/ui/Features";
 import Footer from "@/components/ui/Footet";
 import HowItWorks from "@/components/ui/HowItWorks";
 import Support from "@/components/ui/Support";
+import PricingComponent from "@/components/ui/PricingCard";
 
 export default function LandingPage() {
   return (
@@ -14,6 +15,7 @@ export default function LandingPage() {
       <ParticlesDemo />
       <Features />
       <HowItWorks />
+      <PricingComponent />
       <Support />
       <Footer />
     </div>
