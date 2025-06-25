@@ -14,7 +14,7 @@ import axios from "axios";
 import {  formatYouTubeEmbedOutput } from "@/lib/helper";
 
 interface ChatInterfaceProps {
-  chatId: Id<"chats">;
+  chatId: string;
   initialMessages: Doc<"messages">[];
 }
 

@@ -12,7 +12,7 @@ import {
 } from "@/lib/types";
 import { getServerSession } from "next-auth/next"
 import dbConnect from '@/lib/mongoose'
-import { authOptions } from "../../auth/[...nextauth]/route"
+import { authOptions } from "@/lib/auth";
 import message from "@/models/message";
 
 

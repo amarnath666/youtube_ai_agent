@@ -15,7 +15,9 @@ interface ChatPageParams {
   }
 }
 
-const ChatPage =   ({ params }: ChatPageParams) => {
+const ChatPage =   ({
+  params,
+}: any) => {
     const {chatId} =  params
   
     const [messages, setMessages] = useState<any>([])
