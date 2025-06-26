@@ -2,8 +2,10 @@
 
 import { AnimatedShinyTextDemo } from "../AnimatedTextDemo";
 import CustomButton from "../CustomButton";
+import { useRouter } from "next/navigation";
 
 const Support = () => {
+  const router = useRouter();
   return (
     <div className="py-[60px] px-[60px] bg-zinc-900 max-w-[1440px] mx-auto w-full  text-center ">
       <div
@@ -21,7 +23,7 @@ const Support = () => {
 
         <CustomButton
           name={"Generate Your First Notes"}
-          onClick={() => console.log("clicked")}
+          onClick={() => router.push("/signin")}
         />
       </div>
     </div>

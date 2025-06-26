@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { Particles } from "@/components/magicui/particles";
-import HompageHeader from "./HomepageHeader";
+import { useRouter } from "next/navigation";
 
 import { AnimatedShinyTextDemo } from "./AnimatedTextDemo";
 
@@ -16,7 +16,7 @@ import { NavbarDemo } from "./NavbarDemo";
 export function ParticlesDemo() {
   const { resolvedTheme } = useTheme();
   const [color, setColor] = useState("#ffffff");
-
+  const router = useRouter();
   useEffect(() => {
     setColor(resolvedTheme === "dark" ? "#ffffff" : "#000000");
   }, [resolvedTheme]);
@@ -40,7 +40,7 @@ export function ParticlesDemo() {
         </p>
         <WhiteButton
           name="✨ Join Waitlist"
-          onClick={() => console.log("clicked")}
+          onClick={() => router.push("/signin")}
         />
         <Particles
           className="absolute inset-0 z-0"

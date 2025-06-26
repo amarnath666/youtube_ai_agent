@@ -40,11 +40,11 @@ export function NavbarDemo() {
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
-          <NavItems items={navItems} />
+          {/* <NavItems items={navItems} /> */}
           <div className="flex items-center gap-4">
             <NavbarButton variant="secondary" onClick={() => router.push("/signin")}>Login</NavbarButton>
             {/* <NavbarButton variant="primary">Book a call</NavbarButton> */}
-              <CustomButton name="Join Waitlist" onClick={() => router.push("/dashboard")} />
+              <CustomButton name="Join Waitlist" onClick={() => router.push("/signin")} />
           </div>
         </NavBody>
 
@@ -62,7 +62,7 @@ export function NavbarDemo() {
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
           >
-            {navItems.map((item, idx) => (
+            {/* {navItems.map((item, idx) => (
               <a
                 key={`mobile-link-${idx}`}
                 href={item.link}
@@ -71,7 +71,7 @@ export function NavbarDemo() {
               >
                 <span className="block">{item.name}</span>
               </a>
-            ))}
+            ))} */}
             <div className="flex w-full flex-col gap-4">
               <NavbarButton
                 onClick={() => setIsMobileMenuOpen(false)}
