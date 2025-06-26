@@ -9,17 +9,17 @@ const ContactUs = () => (
       Have a question, feedback, or issue? We’re here to help! Feel free to reach out to us anytime.
     </p>
 
-    <div className="bg-gray-100 p-4 rounded-lg shadow">
+    <div className=" rounded-lg shadow">
       <p className="text-lg font-medium">📧 Email</p>
       <a
         href="mailto:contactytnotes@gmail.com"
-        className="text-blue-600 hover:underline"
+        className=" hover:underline"
       >
         contactytnotes@gmail.com
       </a>
     </div>
 
-    <p className="mt-6 text-sm text-gray-600">
+    <p className="mt-6 text-sm ">
       We usually respond within 24–48 hours. Thank you for using <strong>YTNotes</strong>!
     </p>
    
