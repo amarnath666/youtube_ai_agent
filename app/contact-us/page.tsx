@@ -22,6 +22,10 @@ const ContactUs = () => (
     <p className="mt-6 text-sm ">
       We usually respond within 24–48 hours. Thank you for using <strong>YTNotes</strong>!
     </p>
+
+      <p className="mt-6 text-sm ">
+        Address: Vinayak Nagar , Pincode: 500056, Hyderabad
+    </p>
    
   </div>
    <Footer />
