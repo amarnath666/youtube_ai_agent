@@ -1,4 +1,4 @@
-
+"use client";
 import CustomButton from "./CustomButton"
 
 const HompageHeader = () => {
@@ -6,7 +6,7 @@ const HompageHeader = () => {
     <header>
     <nav className=" border-gray-200 px-4 lg:px-[50px] pt-[25px] bg-zinc-900 w-full">
         <div className="flex flex-wrap justify-between items-center mx-auto w-full">
-            <a href="https://flowbite.com" className="flex items-center">
+            <a href="/" className="flex items-center">
                 {/* <img src="https://flowbite.com/docs/images/logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" /> */}
                 <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white mr-3">YTNotes</span>
             </a>
@@ -22,7 +22,7 @@ const HompageHeader = () => {
             <div className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul className="flex flex-col mt-4 tracking-tight lg:flex-row lg:space-x-2 lg:mt-0">
                     <li>
-                        <a href="#" className="block py-1 px-4 bg-neutral-800 text-white rounded-full border border-white/5     hover:bg-neutral-800  " aria-current="page">Home</a>
+                        <a href="/" className="block py-1 px-4 bg-neutral-800 text-white rounded-full border border-white/5     hover:bg-neutral-800  " aria-current="page">Home</a>
                     </li>
                     <li>
                         <a href="#" className="block border-white/5  text-gray-700   hover:bg-gray-50 lg:hover:bg-transparent  lg:hover:text-primary-700 py-1 px-4 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">How it Works</a>

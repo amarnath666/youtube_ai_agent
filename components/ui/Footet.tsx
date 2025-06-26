@@ -2,7 +2,20 @@ const Footer = () => {
   const links = [
     {
       title: "Product",
-      items: ["About", "Privacy Policy", "Refund Policy"],
+      items: [{
+        name: "About Us",
+        href: "/about-us",
+      }, {
+        name: "Privacy Policy",
+        href: "/privacy-policy",
+      }, {
+        name: "Refund Policy",
+        href: "/refund-policy",
+      }, {
+        name: "Terms and Conditions",
+        href: "/terms-and-conditions",
+      }],
+ 
     },
 
   ];
@@ -26,8 +39,13 @@ const Footer = () => {
              
               <ul className="space-y-2">
                 {section.items.map((link, index) => (
-                  <li key={index} className="hover:text-white transition-colors cursor-pointer">
-                    {link}
+                  <li key={index}>
+                    <a
+                      href={link.href}
+                      className="text-white hover:text-gray-300 transition-colors"
+                    >
+                      {link.name}
+                    </a>
                   </li>
                 ))}
               </ul>
