@@ -12,7 +12,7 @@ const PrivacyPolicy = () => (
       All summaries are generated using AI and are stored temporarily to ensure performance. We do not access, store, or track any private user content beyond the scope of the service.
     </p>
     <p className="mb-4">
-      By using YTNotes, you consent to our privacy practices. If you have concerns, please contact us at support@ytnotes.ai.
+      By using YTNotes, you consent to our privacy practices. If you have concerns, please contact us at contactytnotes@gmail.com.
     </p>
   </div>
   <Footer />

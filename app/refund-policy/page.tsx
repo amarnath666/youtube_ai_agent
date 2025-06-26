@@ -9,7 +9,7 @@ const RefundPolicy = () => (
       At <strong>YTNotes</strong>, we aim to deliver high-quality summaries using advanced AI technology. Since our service is digital and accessible instantly, <strong>no refunds will be made</strong> under any circumstances.
     </p>
     <p className="mb-4">
-      Please make sure to review the features and demo before making a purchase or subscribing to a plan. If you encounter any issues, feel free to contact our support team at support@ytnotes.ai.
+      Please make sure to review the features and demo before making a purchase to a plan. If you encounter any issues, feel free to contact our support team at contactytnotes@gmail.com.
     </p>
   </div>
   <Footer />
