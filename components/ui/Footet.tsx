@@ -14,8 +14,11 @@ const Footer = () => {
       }, {
         name: "Terms and Conditions",
         href: "/terms-and-conditions",
+        }, {
+        name: "Contact Us",
+        href: "/contact-us",
       }],
- 
+      
     },
 
   ];
