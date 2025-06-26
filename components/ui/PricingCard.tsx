@@ -5,7 +5,8 @@ const PricingComponent = () => {
   const plans = [
     {
       name: "Free",
-      price: "$0",
+      // price: "$0",
+      price: "₹0",
       period: "forever",
       description: "Perfect for getting started",
       features: [
@@ -25,7 +26,7 @@ const PricingComponent = () => {
     },
     {
       name: "Monthly",
-      price: "$9.99",
+      price: "₹500",
       period: "per month",
       description: "For regular users",
       features: [
@@ -41,10 +42,10 @@ const PricingComponent = () => {
     },
     {
       name: "Yearly",
-      price: "$99.99",
+      price: "₹5000",
       period: "per year",
-      originalPrice: "$119.88",
-      savings: "Save $19.89",
+      originalPrice: "₹6000",
+      savings: "Save ₹1000",
       description: "Best value for power users",
       features: [
         "Unlimited messages & summarizing",
@@ -123,9 +124,9 @@ const PricingComponent = () => {
                 ))}
               </ul>
 
-              <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${plan.buttonStyle}`}>
+              {/* <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${plan.buttonStyle}`}>
                 {plan.buttonText}
-              </button>
+              </button> */}
 
              
             </div>
