@@ -17,6 +17,7 @@ const SubcriptionSchema = new mongoose.Schema({
   },
   couponId: {
     type: String,
+    ref: 'Coupon',
   },
   startDate: {
     type: String, 

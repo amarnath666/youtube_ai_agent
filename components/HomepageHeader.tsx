@@ -1,8 +1,10 @@
 "use client";
 import CustomButton from "./CustomButton";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
+
 const HompageHeader = () => {
+  const { data: session, status } = useSession();
   const router = useRouter();
   return (
     <header>

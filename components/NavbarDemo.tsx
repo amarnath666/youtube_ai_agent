@@ -12,10 +12,12 @@ import {
   MobileNavMenu,
 } from "./resizableNavbar";
 import { useRouter } from "next/navigation";
-
+import Profile from "./ui/Profile";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export function NavbarDemo() {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const navItems = [
     {
@@ -34,6 +36,10 @@ export function NavbarDemo() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+
+  if (status === "loading") return null;
+  console.log(session, "session");
+
   return (
     <div className="relative w-full">
       <Navbar>
@@ -42,9 +48,23 @@ export function NavbarDemo() {
           <NavbarLogo />
           {/* <NavItems items={navItems} /> */}
           <div className="flex items-center gap-4">
-            <NavbarButton variant="secondary" onClick={() => router.push("/signin")}>Login</NavbarButton>
+            {!session && (
+              <NavbarButton
+                variant="secondary"
+                onClick={() => router.push("/signin")}
+              >
+                Login
+              </NavbarButton>
+            )}
             {/* <NavbarButton variant="primary">Book a call</NavbarButton> */}
-              <CustomButton name="Join Waitlist" onClick={() => router.push("/signin")} />
+            {session ? (
+              <Profile   />
+            ) : (
+              <CustomButton
+                name="Join Waitlist"
+                onClick={() => router.push("/signin")}
+              />
+            )}
           </div>
         </NavBody>
 
@@ -91,7 +111,7 @@ export function NavbarDemo() {
           </MobileNavMenu>
         </MobileNav>
       </Navbar>
-     
+
       {/* Navbar */}
     </div>
   );
