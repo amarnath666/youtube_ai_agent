@@ -1,5 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import moment from "moment-timezone";
+import {
+  convertToRupee,
+  getPlusOneMonthDate,
+  getPlusOneYearDate,
+  getTodayDateInIst,
+} from "@/lib/moment-helper";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import dbConnect from "@/lib/mongoose";
+import Subcription from "@/models/subcription";
+import Plan from "@/models/plan";
+import subcription from "@/models/subcription";
 
 const generatedSignature = (
   razorpayOrderId: string,
@@ -19,9 +32,16 @@ const generatedSignature = (
 };
 
 export async function POST(request: NextRequest) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
   try {
-    const { orderCreationId, razorpayPaymentId, razorpaySignature } =
+    const { orderCreationId, razorpayPaymentId, razorpaySignature, amount } =
       await request.json();
+
+    console.log(orderCreationId, razorpayPaymentId, razorpaySignature, amount);
 
     const signature = generatedSignature(orderCreationId, razorpayPaymentId);
     if (signature !== razorpaySignature) {
@@ -31,8 +51,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    
+    const convertedAmount = convertToRupee(amount);
 
+    console.log("payment verified successfully");
+
+    await dbConnect();
+
+    const plan = await Plan.findOne({
+      price: convertedAmount,
+    });
+
+    console.log(plan, "plan");
+
+    if (!plan) {
+      return NextResponse.json(
+        { message: "plan not found", isOk: false },
+        { status: 400 }
+      );
+    }
+
+    console.log("plan found");
+
+    // check if subcription already exists
+    const existingSubcription = await Subcription.findOne({
+      userId: session.user.id,
+      planId: plan._id,
+    });
+
+    if (existingSubcription) {
+      // will handle later
+    } else {
+      // create new subcription
+      const subcription = new Subcription({
+        userId: session.user.id,
+        planId: plan._id,
+        pricePaid: plan.price,
+        startDate: getTodayDateInIst(),
+        endDate:
+          plan.type === "monthly"
+            ? getPlusOneMonthDate()
+            : getPlusOneYearDate(),
+      });
+
+      await subcription.save();
+    }
     return NextResponse.json(
       { message: "payment verified successfully", isOk: true },
       { status: 200 }

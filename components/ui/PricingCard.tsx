@@ -145,6 +145,7 @@ const PricingComponent = () => {
               razorpayPaymentId: response.razorpay_payment_id,
               razorpayOrderId: response.razorpay_order_id,
               razorpaySignature: response.razorpay_signature,
+              amount: amount,
             };
 
             const result = await axios.post("/api/verify", data);
