@@ -29,7 +29,6 @@ const Profile = () => {
     return <div>No user found</div>;
   }
 
-  console.log(existingUser, "exiting usesr");
 
   return (
     <DropdownMenu>

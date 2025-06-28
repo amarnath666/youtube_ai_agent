@@ -8,6 +8,7 @@ import Plan from "@/models/plan";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { SignPopup } from "./sign-popup";
+import Razorpay from "razorpay";
 
 type Plan = {
   _id: string;
@@ -23,6 +24,7 @@ const PricingComponent = () => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // fetch plan data
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get("/api/plan");
@@ -32,11 +34,9 @@ const PricingComponent = () => {
     fetchData();
   }, []);
 
-  console.log(planData);
-  console.log("price:", planData?.[0]?.price);
-  console.log(session, "data");
   if (status === "loading") return;
 
+  // plans data
   const plans = [
     {
       id: "random",
@@ -96,27 +96,90 @@ const PricingComponent = () => {
     },
   ];
 
-const handleClick = async (price: number, planId: string) => {
-  if (session) {
-    try {
-      setIsLoading(true);
-      const response = await axios.post("/api/order", {
-        amount: price * 100,
-        currency: "INR",
-        planId: planId,
-      });
-      
-    } catch (err : any) {
-      toast.error(err.response.data.error || "Something went wrong");
-      console.error("API error:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  } else {
-    setOpen(true);
-  }
-};
+  // login or create order id
+  const handleClick = async (price: number, planId: string) => {
+    if (session) {
+      try {
+        setIsLoading(true);
+        const response = await axios.post("/api/order", {
+          amount: price * 100,
+          currency: "INR",
+          planId: planId,
+        });
 
+        const data = response.data;
+
+        // Call payment immediately
+        processPayment(response.data.orderId, price * 100);
+      } catch (err: any) {
+        toast.error(err.response.data.error || "Something went wrong");
+        console.error("API error:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setOpen(true);
+    }
+  };
+
+  // process payment on order creation
+  const processPayment = async (orderId: string, amount: number) => {
+    if (!session || !orderId || !amount) {
+      console.error("Missing session, orderId, or amount");
+      return;
+    }
+
+    try {
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
+        amount: amount,
+        currency: "INR",
+        name: session?.user?.name || "Your Company",
+        description: "Payment for your plan",
+        order_id: orderId,
+        // Callback handler
+        handler: async function (response: any) {
+          try {
+            const data = {
+              orderCreationId: orderId,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpaySignature: response.razorpay_signature,
+            };
+
+            const result = await axios.post("/api/verify", data);
+            const res = result.data;
+
+            if (res.isOk) {
+              alert("Payment succeeded!");
+            } else {
+              alert(res.message || "Verification failed");
+            }
+          } catch (err) {
+            console.error("Error verifying payment:", err);
+            alert("Verification failed");
+          }
+        },
+        prefill: {
+          name: session?.user?.name || "",
+          email: session?.user?.email || "",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+
+      paymentObject.on("payment.failed", function (response: any) {
+        alert(`Payment failed: ${response.error.description}`);
+      });
+
+      paymentObject.open();
+    } catch (error) {
+      console.error("Error initializing Razorpay:", error);
+    }
+  };
 
   return (
     <div className="bg-zinc-900 min-h-screen py-16 px-4">
@@ -196,7 +259,7 @@ const handleClick = async (price: number, planId: string) => {
 
               <button
                 onClick={() => handleClick(plan.price as number, plan.id)}
-                className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${plan.buttonStyle}`}
+                className={`w-full cursor-pointer py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${plan.buttonStyle}`}
               >
                 {plan.buttonText}
               </button>
@@ -204,9 +267,7 @@ const handleClick = async (price: number, planId: string) => {
           ))}
         </div>
       </div>
-      {open && (
-       <SignPopup open={open} setOpen={setOpen} />
-      )}
+      {open && <SignPopup open={open} setOpen={setOpen} />}
     </div>
   );
 };

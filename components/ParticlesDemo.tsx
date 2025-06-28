@@ -2,12 +2,9 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-
 import { Particles } from "@/components/magicui/particles";
 import { useRouter } from "next/navigation";
-
 import { AnimatedShinyTextDemo } from "./AnimatedTextDemo";
-
 import CustomButton from "./CustomButton";
 import WhiteButton from "./WhiteButton";
 import { AuroraText } from "./magicui/aurora-text";

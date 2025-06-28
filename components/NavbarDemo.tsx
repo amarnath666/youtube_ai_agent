@@ -38,7 +38,7 @@ export function NavbarDemo() {
 
 
   if (status === "loading") return null;
-  console.log(session, "session");
+
 
   return (
     <div className="relative w-full">

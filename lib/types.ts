@@ -62,6 +62,13 @@ export interface ToolEndMessage extends BaseStreamMessage {
   output: unknown;
 }
 
+declare global {
+  interface Window {
+    Razorpay: any; // you can use the proper type if you have it
+  }
+}
+
+
 export type StreamMessage =
   | TokenMessage
   | ErrorMessage
@@ -69,3 +76,5 @@ export type StreamMessage =
   | DoneMessage
   | ToolStartMessage
   | ToolEndMessage;
+
+  

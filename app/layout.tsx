@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 import { Providers } from "@/components/Providers";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,19 +27,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Providers>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Script
+          id="razorpay-checkout-js"
+          src="https://checkout.razorpay.com/v1/checkout.js"
+        />
+        <Providers>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {children}
-             <Toaster />
+            <Toaster />
           </ThemeProvider>
-          </Providers>
-        </body>
-      </html>
- 
+        </Providers>
+      </body>
+    </html>
   );
 }
