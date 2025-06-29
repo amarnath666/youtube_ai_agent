@@ -1,7 +1,7 @@
 "use client";
 
 import { ParticlesDemo } from "@/components/ParticlesDemo";
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from "next-auth/react";
 import Features from "@/components/ui/Features";
 import Footer from "@/components/ui/Footet";
 import HowItWorks from "@/components/ui/HowItWorks";
@@ -11,14 +11,18 @@ import PricingComponent from "@/components/ui/PricingCard";
 export default function LandingPage() {
   return (
     <SessionProvider>
-    <div className="bg-zinc-900">
-      <ParticlesDemo />
-      <Features />
-      <HowItWorks />
-      <PricingComponent />
-      <Support />
-      <Footer />
-    </div>
+      <div className="bg-zinc-900">
+        <ParticlesDemo />
+        <Features />
+        <div id="how-it-works">
+          <HowItWorks />
+        </div>
+        <div id="pricing">
+          <PricingComponent />
+        </div>
+        <Support />
+        <Footer />
+      </div>
     </SessionProvider>
   );
 }

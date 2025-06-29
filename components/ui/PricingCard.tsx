@@ -152,13 +152,13 @@ const PricingComponent = () => {
             const res = result.data;
 
             if (res.isOk) {
-              alert("Payment succeeded!");
+              toast.success("Payment successful");
             } else {
-              alert(res.message || "Verification failed");
+              toast.error(res.message || "Verification failed");
             }
-          } catch (err) {
+          } catch (err: any) {
             console.error("Error verifying payment:", err);
-            alert("Verification failed");
+            toast.error(err || "Verification failed");
           }
         },
         prefill: {

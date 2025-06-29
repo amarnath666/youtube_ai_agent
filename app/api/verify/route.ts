@@ -75,11 +75,36 @@ export async function POST(request: NextRequest) {
     // check if subcription already exists
     const existingSubcription = await Subcription.findOne({
       userId: session.user.id,
-      planId: plan._id,
-    });
+    }).sort({ endDate: -1 });
 
     if (existingSubcription) {
-      // will handle later
+      // Handle renewal - extend existing subscription
+      const currentEndDate = moment.tz(
+        existingSubcription.endDate,
+        "Asia/Kolkata"
+      );
+      const today = getTodayDateInIst();
+
+      const baseDate = currentEndDate.isAfter(today) ? currentEndDate : today;
+
+      const newEndDate =
+        plan.type === "monthly"
+          ? moment(baseDate).add(1, "month").format("YYYY-MM-DD")
+          : moment(baseDate).add(1, "year").format("YYYY-MM-DD");
+
+      // Update existing subscription
+      await Subcription.findByIdAndUpdate(existingSubcription._id, {
+        endDate: newEndDate,
+        $push: {
+          renewals: {
+            renewalDate: getTodayDateInIst(),
+            pricePaid: plan.price,
+            previousEndDate: existingSubcription.endDate,
+            newEndDate: newEndDate,
+            paymentId: razorpayPaymentId,
+          },
+        },
+      });
     } else {
       // create new subcription
       const subcription = new Subcription({
@@ -87,6 +112,7 @@ export async function POST(request: NextRequest) {
         planId: plan._id,
         pricePaid: plan.price,
         startDate: getTodayDateInIst(),
+        paymentId: razorpayPaymentId,
         endDate:
           plan.type === "monthly"
             ? getPlusOneMonthDate()
