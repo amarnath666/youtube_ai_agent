@@ -7,6 +7,7 @@ import { useNavigation } from "@/lib/context/navigation";
 import { NavigationContext } from "@/lib/context/navigation";
 import { use } from "react";
 import { signOut } from "next-auth/react";
+import Profile from "./ui/Profile";
 
 export default function Header() {
   const { setIsMobileNavOpen } = use(NavigationContext);
@@ -26,12 +27,13 @@ export default function Header() {
           <div className="font-semibold ">YT Notes</div>
         </div>
         <div className="flex items-center">
-          <button
+           <Profile />
+          {/* <button
             className="bg-gray-100 hover:bg-gray-200 rounded-full p-2 text-gray-500 transition-all duration-200"
             onClick={() => signOut({ callbackUrl: "/" })}
           >
             Logout
-          </button>
+          </button> */}
         </div>
       </div>
     </header>

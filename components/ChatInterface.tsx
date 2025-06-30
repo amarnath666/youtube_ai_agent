@@ -1,28 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Doc, Id } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { ChatRequestBody, StreamMessageType } from "@/lib/types";
 import WelcomeMessage from "./WelcomeMessage";
 import { createSSEParser } from "@/lib/createSSEParser";
 import { MessageBubble } from "@/components/MessageBubble";
 import { ArrowRight } from "lucide-react";
-import { getConvexClient } from "@/lib/convex";
-import { api } from "@/convex/_generated/api";
 import axios from "axios";
-import {  formatYouTubeEmbedOutput } from "@/lib/helper";
+import { formatYouTubeEmbedOutput } from "@/lib/helper";
 
 interface ChatInterfaceProps {
   chatId: string;
-  initialMessages: Doc<"messages">[];
+  initialMessages: any[];
 }
 
 export default function ChatInterface({
   chatId,
   initialMessages,
 }: ChatInterfaceProps) {
-  const [messages, setMessages] = useState<Doc<"messages">[]>(initialMessages);
+  const [messages, setMessages] = useState<any[]>(initialMessages);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [streamedResponse, setStreamedResponse] = useState("");
@@ -36,10 +33,9 @@ export default function ChatInterface({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, streamedResponse]);
 
-    useEffect(() => {
+  useEffect(() => {
     setMessages(initialMessages);
   }, [initialMessages]);
-
 
   /**
    * Processes a ReadableStream from the SSE response.
@@ -62,12 +58,10 @@ export default function ChatInterface({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-   
     e.preventDefault();
     const trimmedInput = input.trim();
     if (!trimmedInput || isLoading) return;
 
-  
     // Reset UI state for new message
     setInput("");
     setStreamedResponse("");
@@ -76,18 +70,15 @@ export default function ChatInterface({
 
     // Add user's message immediately for better UX
     const optimisticUserMessage = {
-      _id: `temp_${Date.now()}` as Id<"messages">,
+      _id: `temp_${Date.now()}` as any,
       chatId,
       content: trimmedInput,
       role: "user",
       createdAt: Date.now(),
       _creationTime: Date.now(),
-    } as Doc<"messages">;
+    } as any;
 
- 
     setMessages((prev) => [...prev, optimisticUserMessage]);
-
-  
 
     // Track complete response for saving to database
     let fullResponse = "";
@@ -103,8 +94,6 @@ export default function ChatInterface({
         chatId,
       };
 
- 
-
       // Initialize SSE connection
       const response = await fetch("/api/chat/stream", {
         method: "POST",
@@ -115,38 +104,29 @@ export default function ChatInterface({
       if (!response.ok) throw new Error(await response.text());
       if (!response.body) throw new Error("No response body available");
 
-   
-
       // Create SSE parser and stream reader
       const parser = createSSEParser();
 
       const reader = response.body.getReader();
- 
 
       // Process the stream chunks
       await processStream(reader, async (chunk) => {
- 
         // Parse SSE messages from the chunk
         const messages = parser.parse(chunk);
-  
 
         // Handle each message based on its type
         for (const message of messages) {
-      
           switch (message.type) {
             case StreamMessageType.Token:
-            
               // Handle streaming tokens (normal text response)
               if ("token" in message) {
-                
                 fullResponse += message.token;
-                
+
                 setStreamedResponse(fullResponse);
               }
               break;
 
             case StreamMessageType.ToolStart:
-             
               // Handle start of tool execution (e.g. API calls, file operations)
               if ("tool" in message) {
                 setCurrentTool({
@@ -164,16 +144,14 @@ export default function ChatInterface({
               break;
 
             case StreamMessageType.ToolEnd:
-             
               // Handle completion of tool execution
               if ("tool" in message && currentTool) {
                 // Replace the "Processing..." message with actual output
-             
+
                 const lastTerminalIndex = fullResponse.lastIndexOf(
                   '<div class="bg-[#1e1e1e]'
                 );
                 if (lastTerminalIndex !== -1) {
-              
                   // fullResponse =
                   //   fullResponse?.substring(0, lastTerminalIndex) +
                   //   formatYouTubeEmbedOutput(
@@ -188,7 +166,6 @@ export default function ChatInterface({
               break;
 
             case StreamMessageType.Error:
-              
               // Handle error messages from the stream
               if ("error" in message) {
                 throw new Error(message.error);
@@ -198,16 +175,13 @@ export default function ChatInterface({
             case StreamMessageType.Done:
               // Handle completion of the entire response
               const assistantMessage = {
-                _id: `temp_assistant_${Date.now()}` as unknown as Id<"messages">,
+                _id: `temp_assistant_${Date.now()}` as unknown as any,
                 _creationTime: Date.now(),
                 chatId,
                 content: fullResponse,
                 role: "assistant",
                 createdAt: Date.now(),
-              } as Doc<"messages">;
-
-              // Save the complete message to the database
-              const convex = getConvexClient();
+              } as any;
 
               // call nextjs api to store message
               const res = await axios.post("/api/message/store", {
@@ -246,9 +220,9 @@ export default function ChatInterface({
       {/* Messages container */}
       <section className="flex-1 overflow-y-auto bg-zinc-800 p-2 md:p-0">
         <div className="max-w-4xl mx-auto p-4 space-y-3">
-          {/* {messages?.length === 0 && <WelcomeMessage />} */}
+          {messages?.length === 0 && <WelcomeMessage />}
 
-          {messages?.map((message: Doc<"messages">) => (
+          {messages?.map((message: any) => (
             <MessageBubble
               key={message?._id}
               content={message?.content}
@@ -286,7 +260,7 @@ export default function ChatInterface({
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Message AI Agent..."
+              placeholder="Enter your youtube video url..."
               className="flex-1 py-3 px-4 rounded-2xl border   pr-12 bg-zinc-800 placeholder:text-white"
               disabled={isLoading}
             />

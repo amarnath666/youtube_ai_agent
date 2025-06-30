@@ -26,19 +26,17 @@ export function NavbarDemo() {
     },
     {
       name: "How It Works",
-         link: "#how-it-works",
-  },
-  {
-    name: "Pricing",
-    link: "#pricing",
-  },
-];
+      link: "#how-it-works",
+    },
+    {
+      name: "Pricing",
+      link: "#pricing",
+    },
+  ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-
   if (status === "loading") return null;
-
 
   return (
     <div className="relative w-full">
@@ -58,7 +56,7 @@ export function NavbarDemo() {
             )}
             {/* <NavbarButton variant="primary">Book a call</NavbarButton> */}
             {session ? (
-              <Profile   />
+              <Profile />
             ) : (
               <CustomButton
                 name="Join Waitlist"
@@ -116,5 +114,3 @@ export function NavbarDemo() {
     </div>
   );
 }
-
-

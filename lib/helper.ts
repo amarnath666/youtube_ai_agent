@@ -1,3 +1,5 @@
+import { Code, FileText, Table } from "lucide-react";
+
 export const extractYouTubeId = (url: string): string | null => {
   console.log("url", url);
   const regex =
@@ -54,6 +56,62 @@ export const formatYouTubeEmbedOutput = (
 </div>
 ---END---`;
 };
+
+
+export const formatMessage = (content: string): string => {
+  // First unescape backslashes
+  content = content.replace(/\\\\/g, "\\");
+
+  // Then handle newlines
+  content = content.replace(/\\n/g, "\n");
+
+  // Remove only the markers but keep the content between them
+  content = content.replace(/---START---\n?/g, "").replace(/\n?---END---/g, "");
+
+  // Remove Markdown headings ### ## #
+  content = content.replace(/^#{1,6}\s?/gm, "");
+
+  // Remove **bold** or __bold__
+  content = content.replace(/\*\*(.*?)\*\*/g, "$1");
+  content = content.replace(/__(.*?)__/g, "$1");
+
+  // Trim any extra whitespace that might be left
+  return content.trim();
+};
+
+export const isSummaryContent = (content: string) => {
+  const summaryKeywords = [
+    "summary",
+    "summarize",
+    "key points",
+    "main points",
+    "overview",
+    "recap",
+    "highlights",
+    "takeaways",
+    "conclusion",
+    "in summary",
+    "to summarize",
+    "bullet points",
+    "key findings",
+    "executive summary",
+  ];
+
+  const lowerContent = content.toLowerCase();
+  return (
+    summaryKeywords.some((keyword) => lowerContent.includes(keyword)) ||
+    content.includes("•") ||
+    content.includes("- ") ||
+    content.includes("1.") ||
+    (content.split("\n").length > 3 && content.length > 200)
+  );
+};
+
+export const formats = [
+    { key: "TXT", label: "Plain Text", icon: FileText },
+    { key: "JSON", label: "JSON", icon: Code },
+    { key: "CSV", label: "CSV", icon: Table },
+  ];
 
 // terminal sytle
 // export  const formatTerminalOutput = (

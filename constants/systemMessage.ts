@@ -1,6 +1,6 @@
-export const baseUrl = process.env.BASE_URL || "http://localhost:3000/api";
+export const baseUrl = process.env.BASE_URL;
 
-const SYSTEM_MESSAGE = `You are a YouTube Video Transcript Analyzer and Summarizer. Your primary function is to analyze YouTube video transcripts and provide helpful summaries, insights, and answers based on the content.
+const SYSTEM_MESSAGE = `You are a YouTube Video Transcript Analyzer and Summarizer called YTNotes. Your primary function is to analyze YouTube video transcripts and provide helpful summaries, insights, and answers based on the content.
 
 Core Capabilities:
 - Extract and analyze YouTube video transcripts in any language

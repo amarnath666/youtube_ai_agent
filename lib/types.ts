@@ -1,5 +1,3 @@
-import { Id } from "@/convex/_generated/dataModel";
-
 
 // SSE Constants
 export const SSE_DATA_PREFIX = "data: " as const;
@@ -77,4 +75,15 @@ export type StreamMessage =
   | ToolStartMessage
   | ToolEndMessage;
 
-  
+export interface CopyDownloadDropdownProps {
+  content: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+}
+
+
+export interface MessageBubbleProps {
+  content: string;
+  isUser?: boolean;
+}

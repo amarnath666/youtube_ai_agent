@@ -1,34 +1,25 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import { useUser } from "@clerk/nextjs";
-import { BotIcon } from "lucide-react";
+import {
+  BotIcon,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
+import { MessageBubbleProps } from "@/lib/types";
+import { formatMessage, isSummaryContent } from "@/lib/helper";
+import CopyDownloadDropdown from "./ui/CopyDropdown";
 
-
-interface MessageBubbleProps {
-  content: string;
-  isUser?: boolean;
-}
-
-const formatMessage = (content: string): string => {
-  // First unescape backslashes
-  content = content.replace(/\\\\/g, "\\");
-
-  // Then handle newlines
-  content = content.replace(/\\n/g, "\n");
-
-  // Remove only the markers but keep the content between them
-  content = content.replace(/---START---\n?/g, "").replace(/\n?---END---/g, "");
-
-  // Trim any extra whitespace that might be left
-  return content.trim();
-};
 
 export function MessageBubble({ content, isUser }: MessageBubbleProps) {
-  // const { user } = useUser();
+  const { data: session, status } = useSession();
+  const user = session?.user;
+
+  const showSummaryOptions = isSummaryContent(content);
 
   return (
-    <div className={`flex bg-zinc-800 ${isUser ? "justify-end" : "justify-start"}`}>
+    <div
+      className={`flex bg-zinc-800 ${isUser ? "justify-end" : "justify-start"}`}
+    >
       <div
         className={`rounded-2xl bg-zinc-900  px-4 py-2.5 max-w-[85%] md:max-w-[75%] shadow-sm  relative ${
           isUser
@@ -36,9 +27,15 @@ export function MessageBubble({ content, isUser }: MessageBubbleProps) {
             : "bg-white text-gray-900 rounded-bl-none "
         }`}
       >
+        {showSummaryOptions && (
+          <div className="absolute bottom-2 right-2">
+            <CopyDownloadDropdown content={content} />
+          </div>
+        )}
         <div className="whitespace-pre-wrap text-[15px] leading-relaxed text-white">
           <div dangerouslySetInnerHTML={{ __html: formatMessage(content) }} />
         </div>
+
         <div
           className={`absolute bottom-0 ${
             isUser
@@ -47,21 +44,18 @@ export function MessageBubble({ content, isUser }: MessageBubbleProps) {
           }`}
         >
           <div
-            className={`w-8 h-8 rounded-full border-2 ${
-              isUser ? "bg-white border-gray-100" : "bg-blue-600 border-white"
+            className={`w-8 h-8 rounded-full  ${
+              isUser ? " " : "bg-blue-600 "
             } flex items-center justify-center shadow-sm`}
           >
-            {/* {isUser ? (
+            {isUser ? (
               <Avatar className="h-7 w-7">
-                <AvatarImage src={user?.imageUrl} />
-                <AvatarFallback>
-                  {user?.firstName?.charAt(0)}
-                  {user?.lastName?.charAt(0)}
-                </AvatarFallback>
+                <AvatarImage src={user?.image as string} />
+                <AvatarFallback>{user?.name}</AvatarFallback>
               </Avatar>
             ) : (
               <BotIcon className="h-5 w-5 text-white" />
-            )} */}
+            )}
           </div>
         </div>
       </div>

@@ -34,6 +34,7 @@
     "convex-helpers": "^0.1.95",
     "framer-motion": "^12.18.1",
     "lucide-react": "^0.513.0",
+    "marked": "^16.0.0",
     "moment-timezone": "^0.6.0",
     "mongodb": "^6.17.0",
     "mongoose": "^8.16.0",

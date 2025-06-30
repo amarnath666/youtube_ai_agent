@@ -45,7 +45,7 @@ const trimmer = trimMessages({
 
 // YouTube transcript tool
 const createYouTubeTranscriptTool = () => {
-   console.log("🎥 Creating YouTube transcript tool...");
+  console.log("🎥 Creating YouTube transcript tool...");
   return new DynamicStructuredTool({
     name: "youtube_transcript",
     description:
@@ -55,16 +55,16 @@ const createYouTubeTranscriptTool = () => {
     }),
     func: async ({ url }) => {
       try {
-        console.log("🎥 Fetching YouTube transcript for:" , url);
+        console.log("🎥 Fetching YouTube transcript for:", url);
 
-        const apiUrl =  `${baseUrl}/youtube-transcript`;
+        const apiUrl = `${baseUrl}/youtube-transcript`;
         const response = await axios.post(apiUrl, { url });
 
-        console.log("response came")
+        console.log("response came");
 
         const data = response?.data;
 
-        console.log("addded to data")
+        console.log("addded to data");
 
         if (data.error) {
           throw new Error(data.error);
