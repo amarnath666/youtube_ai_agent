@@ -8,7 +8,6 @@ import Plan from "@/models/plan";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { SignPopup } from "./sign-popup";
-import Razorpay from "razorpay";
 
 type Plan = {
   _id: string;
@@ -23,6 +22,7 @@ const PricingComponent = () => {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [subcription, setSubcription] = useState<any>(null);
 
   // fetch plan data
   useEffect(() => {
@@ -34,7 +34,7 @@ const PricingComponent = () => {
     fetchData();
   }, []);
 
-  if (status === "loading") return;
+
 
   // plans data
   const plans = [
@@ -182,6 +182,17 @@ const PricingComponent = () => {
     }
   };
 
+ useEffect(() => {
+  const fetchData = async () => {
+    if (session) {
+      const response = await axios.get("/api/subscription");
+      setSubcription(response.data.subscription);
+    }
+  };
+  fetchData();
+}, [session]);
+
+
   return (
     <div className="bg-zinc-900 min-h-screen py-16 px-4">
       <div className="max-w-7xl mx-auto">
@@ -227,14 +238,14 @@ const PricingComponent = () => {
                 <h3 className="text-2xl font-bold text-white mb-2">
                   {plan.name}
                 </h3>
-                <p className="text-zinc-400 mb-4">{plan.description}</p>
+                <p className="text-zinc-400 mb-4">{plan?.description}</p>
 
                 <div className="mb-4">
                   <div className="flex items-baseline justify-center">
                     <span className="text-4xl font-bold text-white">
                       ₹{plan.price}
                     </span>
-                    <span className="text-zinc-400 ml-2">/{plan.period}</span>
+                    <span className="text-zinc-400 ml-2">/{plan?.period}</span>
                   </div>
                   {plan.originalPrice && (
                     <div className="mt-2">
@@ -259,10 +270,10 @@ const PricingComponent = () => {
               </ul>
 
               <button
-                onClick={() => handleClick(plan.price as number, plan.id)}
+                onClick={() => handleClick(plan?.price as number, plan.id)}
                 className={`w-full cursor-pointer py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${plan.buttonStyle}`}
               >
-                {plan.buttonText}
+                {subcription?.length > 0 ? "Renew Plan" : plan.buttonText}
               </button>
             </div>
           ))}

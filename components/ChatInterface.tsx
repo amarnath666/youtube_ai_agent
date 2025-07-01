@@ -235,7 +235,7 @@ export default function ChatInterface({
           {/* Loading indicator */}
           {isLoading && !streamedResponse && (
             <div className="flex justify-start animate-in fade-in-0">
-              <div className="rounded-2xl px-4 py-3 bg-white text-gray-900 rounded-bl-none shadow-sm ring-1 ring-inset ring-gray-200">
+              <div className="rounded-2xl  py-3 bg-white text-gray-900 rounded-bl-none shadow-sm ring-1 ring-inset ring-gray-200">
                 <div className="flex items-center gap-1.5">
                   {[0.3, 0.15, 0].map((delay, i) => (
                     <div
@@ -269,7 +269,7 @@ export default function ChatInterface({
               disabled={isLoading || !input.trim()}
               className={`absolute right-1.5 rounded-xl h-9 w-9 p-0 flex items-center justify-center transition-all ${
                 input.trim()
-                  ? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                  ? "bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] text-white shadow-sm"
                   : "bg-gray-100 text-gray-400"
               }`}
             >

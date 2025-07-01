@@ -6,15 +6,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User, LayoutDashboard } from "lucide-react";
+import { LogOut, LayoutDashboard } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { capitalizeAfterSpace } from "@/lib/helper";
+import { MdOutlineVerified } from "react-icons/md";
 
-const capitalizeAfterSpace = (str: string) => {
-  return str.replace(/(?:^|\s)\S/g, (match) => match.toUpperCase());
-};
 
 const Profile = () => {
   const { data: session, status } = useSession();
@@ -53,6 +52,12 @@ const Profile = () => {
           <DropdownMenuItem className="cursor-pointer">
             <LayoutDashboard className="w-5 h-5" />
             Dashboard
+          </DropdownMenuItem>
+        </Link>
+         <Link href="/dashboard/subscription">
+          <DropdownMenuItem className="cursor-pointer">
+            <MdOutlineVerified className="w-5 h-5" />
+              Subscription
           </DropdownMenuItem>
         </Link>
         <DropdownMenuItem

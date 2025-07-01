@@ -9,7 +9,6 @@ import { MessageBubbleProps } from "@/lib/types";
 import { formatMessage, isSummaryContent } from "@/lib/helper";
 import CopyDownloadDropdown from "./ui/CopyDropdown";
 
-
 export function MessageBubble({ content, isUser }: MessageBubbleProps) {
   const { data: session, status } = useSession();
   const user = session?.user;
@@ -45,7 +44,7 @@ export function MessageBubble({ content, isUser }: MessageBubbleProps) {
         >
           <div
             className={`w-8 h-8 rounded-full  ${
-              isUser ? " " : "bg-blue-600 "
+              isUser ? " " : "bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] "
             } flex items-center justify-center shadow-sm`}
           >
             {isUser ? (

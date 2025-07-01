@@ -57,7 +57,6 @@ export const formatYouTubeEmbedOutput = (
 ---END---`;
 };
 
-
 export const formatMessage = (content: string): string => {
   // First unescape backslashes
   content = content.replace(/\\\\/g, "\\");
@@ -108,10 +107,14 @@ export const isSummaryContent = (content: string) => {
 };
 
 export const formats = [
-    { key: "TXT", label: "Plain Text", icon: FileText },
-    { key: "JSON", label: "JSON", icon: Code },
-    { key: "CSV", label: "CSV", icon: Table },
-  ];
+  { key: "TXT", label: "Plain Text", icon: FileText },
+  { key: "JSON", label: "JSON", icon: Code },
+  { key: "CSV", label: "CSV", icon: Table },
+];
+
+export const capitalizeAfterSpace = (str: string) => {
+  return str.replace(/(?:^|\s)\S/g, (match) => match.toUpperCase());
+};
 
 // terminal sytle
 // export  const formatTerminalOutput = (
