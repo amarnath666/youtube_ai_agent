@@ -16,8 +16,7 @@ export default function SignInPage() {
       await signIn("google", {
         callbackUrl: "/dashboard",
       });
-      toast.success("Login Successful");
-  
+    
     } catch (error) {
       toast.error("Login Failed");
       console.error(error);

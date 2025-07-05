@@ -17,10 +17,10 @@ export function MessageBubble({ content, isUser }: MessageBubbleProps) {
 
   return (
     <div
-      className={`flex bg-zinc-800 ${isUser ? "justify-end" : "justify-start"}`}
+      className={`flex bg-zinc-800 px-4 ${isUser ? "justify-end" : "justify-start"}`}
     >
       <div
-        className={`rounded-2xl bg-zinc-900  px-4 py-2.5 max-w-[85%] md:max-w-[75%] shadow-sm  relative ${
+        className={`rounded-2xl bg-zinc-900  px-4 py-4 max-w-[90%] md:max-w-[75%] shadow-sm  relative ${
           isUser
             ? "bg-blue-600 text-white rounded-br-none "
             : "bg-white text-gray-900 rounded-bl-none "

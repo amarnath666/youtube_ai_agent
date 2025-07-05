@@ -17,7 +17,7 @@ export default async function subcriptionPage() {
     return (
     <div className="flex flex-1 flex-col items-center justify-center mt-[30px] md:mt-[50px] p-4 bg-zinc-900">
 
-        <h1 className="text-3xl font-bold text-white mb-[30px]">
+        <h1 className="text-[20px] md:text-3xl font-semibold text-white mb-[30px]">
           You are not subscribed to YTNotes
         </h1>
         <Link

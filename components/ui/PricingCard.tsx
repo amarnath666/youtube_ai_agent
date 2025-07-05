@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { SignPopup } from "./sign-popup";
 import { getTodayDateInIst } from "@/lib/moment-helper";
 import { useRouter } from "next/navigation";
+import { SpinnerComponent } from "./Spinner";
 
 type Plan = {
   _id: string;
@@ -208,7 +209,7 @@ const PricingComponent = () => {
   console.log(subscription, "subcription");
 
   return (
-    <div className="bg-zinc-900 min-h-screen my-[30px] lg:my-[60px] ]  w-full max-w-[1440px] mx-auto">
+    <div className="bg-zinc-900 min-h-screen my-[30px] lg:my-[100px] ]  w-full max-w-[1440px] mx-auto">
       <div className="px-4 md:px-[30px] lg:px-[60px]">
         <div className="text-center mb-[30px] md:mb-[60px]">
           <h2 className="text-[32px] md:text-5xl font-semibold text-white mb-[15px] md:mb-[25px]">
@@ -295,9 +296,15 @@ const PricingComponent = () => {
                     : plan.buttonStyle
                 }`}
               >
-                {subscription?.length > 0 && plan.id !== "random"
-                  ? "Renew Plan"
-                  : plan.buttonText}
+                {isLoading ? (
+                  <div className="flex justify-center items-center ">
+                    <SpinnerComponent />
+                  </div>
+                ) : subscription?.length > 0 && plan.id !== "random" ? (
+                  "Renew Plan"
+                ) : (
+                  plan.buttonText
+                )}
               </button>
             </div>
           ))}

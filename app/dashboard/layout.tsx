@@ -3,7 +3,6 @@
  import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { NavigationProvider } from "@/lib/context/navigation";
-import { SyncUserToConvex } from "@/components/SyncUserToConvex";
 
 export default function DashboardLayout({
   children,

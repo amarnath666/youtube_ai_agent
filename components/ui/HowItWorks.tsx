@@ -43,7 +43,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="my-[45px] lg:my-[60px] px-4 md:px-[30px] lg:px-[60px] bg-zinc-900 max-w-[1440px] mx-auto w-full ">
+    <section className="my-[45px] lg:my-[100px] px-4 md:px-[30px] lg:px-[60px] bg-zinc-900 max-w-[1440px] mx-auto w-full ">
       <div className="">
         {/* Header */}
         <div className="text-center mb-[30px] md:mb-[60px]">

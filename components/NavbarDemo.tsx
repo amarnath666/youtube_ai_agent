@@ -91,22 +91,26 @@ export function NavbarDemo() {
               </a>
             ))}
             <div className="flex w-full max-w-[350px] flex-col gap-4">
-              <NavbarButton
-                onClick={() => router.push("/signin")}
-                variant="primary"
-                className="w-full"
-                
-              >
-                Login
-              </NavbarButton>
-              <NavbarButton
-                
-                variant="primary"
-                className="w-full"
+              {!session && (
+                <NavbarButton
                   onClick={() => router.push("/signin")}
-              >
-                Get Started
-              </NavbarButton>
+                  variant="primary"
+                  className="w-full"
+                >
+                  Login
+                </NavbarButton>
+              )}
+              {session ? (
+                <Profile />
+              ) : (
+                <NavbarButton
+                  variant="primary"
+                  className="w-full"
+                  onClick={() => router.push("/signin")}
+                >
+                  Get Started
+                </NavbarButton>
+              )}
             </div>
           </MobileNavMenu>
         </MobileNav>
