@@ -56,18 +56,18 @@ const Features = () => {
 
 
   return (
-    <section className="py-[60px] px-[60px] bg-zinc-900 max-w-[1440px] mx-auto w-full ">
+    <section className="my-[30px] lg:my-[60px] px-4 md:px-[30px] lg:px-[60px] bg-zinc-900 max-w-[1440px] mx-auto w-full ">
       <div className="">
         {/* Header */}
-        <div className="text-center mb-[60px]">
-          <h2 className="text-4xl md:text-5xl font-semibold text-white mb-[25px]">
+        <div className="text-center mb-[30px] lg:mb-[60px]">
+          <h2 className="text-[32px] md:text-5xl font-semibold text-white mb-[15px] md:mb-[25px]">
             Powerfull{" "}
             <span className="bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] bg-clip-text text-transparent">
               Features{" "}
             </span>
-         
+
           </h2>
-          <p className="text-[20px] leading-snug text-gray-400 text-center ">
+          <p className="text-[14px] md:text-[20px] leading-snug text-gray-400 text-center ">
             Transform any YouTube video into comprehensive, AI-generated notes
             in just four simple steps.
             <br />
@@ -76,7 +76,7 @@ const Features = () => {
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
           {steps.map((step, index) => {
             const IconComponent = step.icons;
             return (

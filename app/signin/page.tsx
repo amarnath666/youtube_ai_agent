@@ -31,10 +31,10 @@ export default function SignInPage() {
       <div className="w-full max-w-[350px] flex flex-row justify-center">
       <Button
         variant="outline"
-        className="w-full flex flex-row cursor-pointer "
+        className="w-full bg-white flex flex-row cursor-pointer text-black"
         onClick={() => handleSignIn()}
       >
-        <FaGoogle className="mr-2 h-5 w-5 text-white" />
+        <FaGoogle className="mr-2 h-5 w-5 text-black" />
         Google
       </Button>
       </div>

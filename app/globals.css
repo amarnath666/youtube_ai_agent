@@ -43,6 +43,7 @@
   --radius-xl: calc(var(--radius) + 4px);
   --animate-shiny-text: shiny-text 8s infinite;
   --animate-move: move 5s linear infinite;
+  --breakpoint-xs: 395px;
   @keyframes shiny-text {
     0%,
     90%,

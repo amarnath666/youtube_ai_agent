@@ -205,24 +205,29 @@ const PricingComponent = () => {
 
   const today = getTodayDateInIst();
 
+  console.log(subscription, "subcription");
+
   return (
-    <div className="bg-zinc-900 min-h-screen py-16 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Choose Your YTNotes Plan
+    <div className="bg-zinc-900 min-h-screen my-[30px] lg:my-[60px] ]  w-full max-w-[1440px] mx-auto">
+      <div className="px-4 md:px-[30px] lg:px-[60px]">
+        <div className="text-center mb-[30px] md:mb-[60px]">
+          <h2 className="text-[32px] md:text-5xl font-semibold text-white mb-[15px] md:mb-[25px]">
+            Choose Your{" "}
+            <span className="bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] bg-clip-text text-transparent">
+              YTNotes Plan
+            </span>
           </h2>
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
+          <p className="text-[14px] md:text-[20px] leading-snug text-gray-400 text-center ">
             Transform your YouTube learning experience with powerful note-taking
             and summarization tools
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mx-auto">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative bg-zinc-800 rounded-2xl p-8 border-2 transition-all duration-300 flex flex-col justify-between ${
+              className={`relative bg-zinc-800/50 rounded-2xl p-8 border-2 transition-all duration-300 flex flex-col justify-between   before:absolute before:top-0 before:left-0 before:w-full before:h-1/2 before:bg-gradient-to-b before:from-[#c471f5]/20 before:to-transparent before:rounded-2xl before:z-0 ${
                 plan.popular
                   ? "border-blue-500 shadow-lg shadow-blue-500/20"
                   : "border-zinc-700 hover:border-zinc-600"
@@ -282,15 +287,15 @@ const PricingComponent = () => {
               </ul>
 
               <button
-                disabled={subscription && plan.id === "random"}
+                disabled={subscription?.length > 0 && plan.id === "random"}
                 onClick={() => handleClick(plan?.price as number, plan.id)}
                 className={`w-full cursor-pointer py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${
-                  subscription && plan.id === "random"
+                  subscription?.length > 0 && plan.id === "random"
                     ? "bg-zinc-400 text-white opacity-50 cursor-not-allowed"
                     : plan.buttonStyle
                 }`}
               >
-                {subscription && plan.id !== "random"
+                {subscription?.length > 0 && plan.id !== "random"
                   ? "Renew Plan"
                   : plan.buttonText}
               </button>

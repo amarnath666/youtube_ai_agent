@@ -250,7 +250,7 @@ export default function ChatInterface({
             />
           ))}
 
-          {userDetails && userDetails?.messageLimit >= 2 && <LimitOver />}
+          {userDetails && userDetails?.messageLimit >= 10 && <LimitOver />}
 
           {streamedResponse && <MessageBubble content={streamedResponse} />}
 
@@ -284,7 +284,7 @@ export default function ChatInterface({
               onChange={(e) => setInput(e.target.value)}
               placeholder="Enter your youtube url..."
               className="flex-1 py-3 px-4 rounded-2xl border   pr-12 bg-zinc-800 placeholder:text-white"
-              disabled={isLoading || (userDetails?.messageLimit ?? 0) >= 2}
+              disabled={isLoading || (userDetails?.messageLimit ?? 0) >= 10}
             />
             <Button
               type="submit"

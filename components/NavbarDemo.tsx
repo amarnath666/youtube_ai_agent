@@ -59,7 +59,7 @@ export function NavbarDemo() {
               <Profile />
             ) : (
               <CustomButton
-                name="Join Waitlist"
+                name="Get Started"
                 onClick={() => router.push("/signin")}
               />
             )}
@@ -90,20 +90,22 @@ export function NavbarDemo() {
                 <span className="block">{item.name}</span>
               </a>
             ))}
-            <div className="flex w-full flex-col gap-4">
+            <div className="flex w-full max-w-[350px] flex-col gap-4">
               <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => router.push("/signin")}
                 variant="primary"
                 className="w-full"
+                
               >
                 Login
               </NavbarButton>
               <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
+                
                 variant="primary"
                 className="w-full"
+                  onClick={() => router.push("/signin")}
               >
-                Book a call
+                Get Started
               </NavbarButton>
             </div>
           </MobileNavMenu>
