@@ -9,11 +9,8 @@ import { MessageBubble } from "@/components/MessageBubble";
 import { ArrowRight } from "lucide-react";
 import axios from "axios";
 import { formatYouTubeEmbedOutput } from "@/lib/helper";
-
-interface ChatInterfaceProps {
-  chatId: string;
-  initialMessages: any[];
-}
+import { UserType, ChatInterfaceProps } from "@/lib/types";
+import LimitOver from "./ui/LimitOver";
 
 export default function ChatInterface({
   chatId,
@@ -23,11 +20,13 @@ export default function ChatInterface({
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [streamedResponse, setStreamedResponse] = useState("");
+  const [userDetails, setUserDetails] = useState<UserType | null>(null);
   const [currentTool, setCurrentTool] = useState<{
     name: string;
     input: unknown;
   } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [chatLenght, setChatLenght] = useState(0);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -133,7 +132,7 @@ export default function ChatInterface({
                   name: message.tool,
                   input: message.input,
                 });
-                console.log("fullResponse", fullResponse);
+              
                 // fullResponse += formatYouTubeEmbedOutput(
                 //   message.tool,
                 //   message.input,
@@ -215,6 +214,27 @@ export default function ChatInterface({
     }
   };
 
+  useEffect(() => {
+    const fetchChats = async () => {
+      const response = await axios.get("/api/chat");
+      setChatLenght(response.data);
+    };
+    fetchChats();
+  }, []);
+
+  // fetch user details from api
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const response = await axios.get("/api/user");
+      setUserDetails(response?.data);
+     
+    };
+    fetchUserDetails();
+  }, []);
+
+   console.log("userDetails", userDetails);
+
+
   return (
     <main className="flex flex-col h-[calc(100vh-theme(spacing.14))]">
       {/* Messages container */}
@@ -230,12 +250,14 @@ export default function ChatInterface({
             />
           ))}
 
+          {userDetails && userDetails?.messageLimit >= 2 && <LimitOver />}
+
           {streamedResponse && <MessageBubble content={streamedResponse} />}
 
           {/* Loading indicator */}
           {isLoading && !streamedResponse && (
             <div className="flex justify-start animate-in fade-in-0">
-              <div className="rounded-2xl  py-3 bg-white text-gray-900 rounded-bl-none shadow-sm ring-1 ring-inset ring-gray-200">
+              <div className="rounded-2xl px-2 md:px-3 py-3 bg-white text-gray-900 rounded-bl-none shadow-sm ring-1 ring-inset ring-gray-200">
                 <div className="flex items-center gap-1.5">
                   {[0.3, 0.15, 0].map((delay, i) => (
                     <div
@@ -260,14 +282,14 @@ export default function ChatInterface({
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Enter your youtube video url..."
+              placeholder="Enter your youtube url..."
               className="flex-1 py-3 px-4 rounded-2xl border   pr-12 bg-zinc-800 placeholder:text-white"
-              disabled={isLoading}
+              disabled={isLoading || (userDetails?.messageLimit ?? 0) >= 2}
             />
             <Button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className={`absolute right-1.5 rounded-xl h-9 w-9 p-0 flex items-center justify-center transition-all ${
+              className={`absolute right-1.5 cursor-pointer rounded-xl h-9 w-9 p-0 flex items-center justify-center transition-all ${
                 input.trim()
                   ? "bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] text-white shadow-sm"
                   : "bg-gray-100 text-gray-400"

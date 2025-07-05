@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import Subcription from "@/models/subcription";
 import CustomButton from "@/components/CustomButton";
 import Link from "next/link";
+import Plan from "@/models/plan";
 
 export default async function subcriptionPage() {
   const session = await getServerSession(authOptions);
@@ -11,16 +12,17 @@ export default async function subcriptionPage() {
 
   const subscription = await Subcription.findOne({ userId: session?.user?.id });
 
-  console.log(subscription, "subcription");
+
   if (!subscription) {
     return (
-      <div className="flex-1 flex items-center justify-center p-4 bg-zinc-900">
-        <h1 className="text-3xl font-bold text-white">
+    <div className="flex flex-1 flex-col items-center justify-center mt-[30px] md:mt-[50px] p-4 bg-zinc-900">
+
+        <h1 className="text-3xl font-bold text-white mb-[30px]">
           You are not subscribed to YTNotes
         </h1>
         <Link
           href="/#pricing"
-          className="relative z-20 px-4 py-2 rounded-md text-black font-medium bg-white hover:shadow-lg transition-all duration-200 cursor-pointer "
+          className="relative m z-20 px-4 py-2 rounded-md text-black font-medium bg-white hover:shadow-lg transition-all duration-200 cursor-pointer "
         >
           Subscribe Now
         </Link>

@@ -8,6 +8,8 @@ import Plan from "@/models/plan";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { SignPopup } from "./sign-popup";
+import { getTodayDateInIst } from "@/lib/moment-helper";
+import { useRouter } from "next/navigation";
 
 type Plan = {
   _id: string;
@@ -18,11 +20,12 @@ type Plan = {
 };
 
 const PricingComponent = () => {
+  const router = useRouter();
   const [planData, setPlanData] = useState<Plan[]>([]);
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [subcription, setSubcription] = useState<any>(null);
+  const [subscription, setSubscription] = useState<any[]>([]);
 
   // fetch plan data
   useEffect(() => {
@@ -33,8 +36,6 @@ const PricingComponent = () => {
 
     fetchData();
   }, []);
-
-
 
   // plans data
   const plans = [
@@ -98,6 +99,12 @@ const PricingComponent = () => {
 
   // login or create order id
   const handleClick = async (price: number, planId: string) => {
+    if (planId === "random") {
+      // Free plan logic → just navigate
+      router.push("/dashboard");
+      return;
+    }
+
     if (session) {
       try {
         setIsLoading(true);
@@ -131,7 +138,7 @@ const PricingComponent = () => {
 
     try {
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: amount,
         currency: "INR",
         name: session?.user?.name || "Your Company",
@@ -182,16 +189,21 @@ const PricingComponent = () => {
     }
   };
 
- useEffect(() => {
-  const fetchData = async () => {
-    if (session) {
-      const response = await axios.get("/api/subscription");
-      setSubcription(response.data.subscription);
-    }
-  };
-  fetchData();
-}, [session]);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (session) {
+        const response = await axios.get("/api/subscribe");
+        setSubscription(response.data.subscription);
+      }
+    };
+    fetchData();
+  }, [session, subscription]);
 
+  if (subscription) {
+    console.log(subscription, "subcription");
+  }
+
+  const today = getTodayDateInIst();
 
   return (
     <div className="bg-zinc-900 min-h-screen py-16 px-4">
@@ -270,10 +282,17 @@ const PricingComponent = () => {
               </ul>
 
               <button
+                disabled={subscription && plan.id === "random"}
                 onClick={() => handleClick(plan?.price as number, plan.id)}
-                className={`w-full cursor-pointer py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${plan.buttonStyle}`}
+                className={`w-full cursor-pointer py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${
+                  subscription && plan.id === "random"
+                    ? "bg-zinc-400 text-white opacity-50 cursor-not-allowed"
+                    : plan.buttonStyle
+                }`}
               >
-                {subcription?.length > 0 ? "Renew Plan" : plan.buttonText}
+                {subscription && plan.id !== "random"
+                  ? "Renew Plan"
+                  : plan.buttonText}
               </button>
             </div>
           ))}

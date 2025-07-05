@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth/next";
 
 export async function GET(req: Request) {
+    console.log("req came")
     try {
         const session = await getServerSession(authOptions);
 
@@ -14,6 +15,8 @@ export async function GET(req: Request) {
         }
 
         await dbConnect();
+
+        console.log("session", session);
 
         const subscription = await Subcription.findOne({ userId: session.user.id });
 

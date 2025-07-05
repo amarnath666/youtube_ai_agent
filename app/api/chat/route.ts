@@ -30,21 +30,21 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-    console.log("getting chats")
+
     try {
   const session = await getServerSession(authOptions)
-  console.log("session", session)
+
 
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
    await dbConnect()
-   console.log("connected to db")
+
 
 
   const chats = await Chat.find({ userId: session.user.id })
-  console.log("chats", chats)
+
 
   return NextResponse.json(chats)
 }  catch (error : any) {

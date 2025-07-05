@@ -1,4 +1,4 @@
-import { Doc, Id } from "@/convex/_generated/dataModel";
+
 import { useRouter } from "next/navigation";
 import { use } from "react";
 import { NavigationContext } from "@/lib/context/navigation";
@@ -9,8 +9,8 @@ function ChatRow({
   chat,
   onDelete,
 }: {
-  chat: Doc<"chats">;
-  onDelete: (id: Id<"chats">) => void;
+  chat: any;
+  onDelete: (id: any) => void;
 }) {
   const router = useRouter();
   const { closeMobileNav } = use(NavigationContext);

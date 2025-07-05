@@ -3,10 +3,13 @@ import dbConnect from "@/lib/mongoose";
 import { authOptions } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import Message from "@/models/message";
+import User from "@/models/user";
 
 export async function POST(req: Request) {
+  console.log("req", req);
   try {
     const session = await getServerSession(authOptions);
+    console.log("session", session);
 
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -28,6 +31,18 @@ export async function POST(req: Request) {
       role,
     });
 
+    // Store user message limit
+    const user = await User.findOne({ _id: session.user.id });
+
+    console.log("user", user);
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    user.messageLimit += 1;
+
+    await user.save();
+    console.log("after saving", user);
     return NextResponse.json({ messageId: message._id });
   } catch (error: any) {
     console.error(error);

@@ -1,18 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
+
 import { Button } from "@/components/ui/button";
 import { PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 // import TimeAgo from "react-timeago";
-import { Doc, Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
-import { useNavigation, NavigationContext } from "@/lib/context/navigation";
+import { NavigationContext } from "@/lib/context/navigation";
 import { use } from "react";
 import ChatRow from "./ChatRow";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -30,19 +29,19 @@ export default function Sidebar() {
     fetchChats();
   }, []);
 
-// const chats = useQuery(api.chat.listChats);
-// const createChat = useMutation(api.chat.createChat);
-// const deleteChat = useMutation(api.chat.deleteChat);
+  // const chats = useQuery(api.chat.listChats);
+  // const createChat = useMutation(api.chat.createChat);
+  // const deleteChat = useMutation(api.chat.deleteChat);
 
   const handleNewChat = async () => {
     const res = await axios.post("/api/chat", {
       title: "New Chat",
     });
-   
+
     const chatId = res.data.chatId;
     router.push(`/dashboard/chat/${chatId}`);
     closeMobileNav();
-  }
+  };
 
   // const handleNewChat = async () => {
   //   // const chatId = await createChat({ title: "New Chat" });
@@ -50,12 +49,20 @@ export default function Sidebar() {
   //   closeMobileNav();
   // };
 
-  const handleDeleteChat = async (id: Id<"chats">) => {
-    // await deleteChat({ id });
-    // If we're currently viewing this chat, redirect to dashboard
-    if (window.location.pathname.includes(id)) {
-      router.push("/dashboard");
-    }
+  const handleDeleteChat = async (id: any) => {
+    try {
+    const res = await axios.delete("/api/chat", {
+      data: {
+        id,
+      },
+    });
+
+    router.push("/dashboard");
+    toast.success("Chat deleted successfully");
+  } catch (error: any) {
+    toast.error(error?.message || "Error deleting chat");
+    console.error("Error deleting chat:", error);
+  }
   };
 
   return (

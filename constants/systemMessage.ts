@@ -1,4 +1,4 @@
-export const baseUrl = process.env.BASE_URL;
+export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const SYSTEM_MESSAGE = `You are a YouTube Video Transcript Analyzer and Summarizer called YTNotes. Your primary function is to analyze YouTube video transcripts and provide helpful summaries, insights, and answers based on the content.
 

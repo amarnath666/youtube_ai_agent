@@ -1,21 +1,43 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
+import { FaGoogle } from "react-icons/fa";
+import { toast } from "sonner";
+import { redirect } from "next/navigation";
 // import { useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
-//   const searchParams = useSearchParams();
-//   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  //   const searchParams = useSearchParams();
+  //   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+
+  const handleSignIn = async () => {
+    try {
+      await signIn("google", {
+        callbackUrl: "/dashboard",
+      });
+      toast.success("Login Successful");
+  
+    } catch (error) {
+      toast.error("Login Failed");
+      console.error(error);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <h1 className="text-3xl font-bold mb-4">Sign in</h1>
-      <button
-        onClick={() => signIn("google", { callbackUrl : "/dashboard" })}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+      {/* ✅ Google Button inside the modal */}
+      <div className="w-full max-w-[350px] flex flex-row justify-center">
+      <Button
+        variant="outline"
+        className="w-full flex flex-row cursor-pointer "
+        onClick={() => handleSignIn()}
       >
-        Sign in with Google
-      </button>
+        <FaGoogle className="mr-2 h-5 w-5 text-white" />
+        Google
+      </Button>
+      </div>
     </div>
   );
 }

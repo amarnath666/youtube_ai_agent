@@ -22,6 +22,8 @@ export async function POST(req: Request) {
     role: "user",
   });
 
+  // 
+
   return NextResponse.json({ messageId: message._id })
 } catch (error : any) {
   console.error(error)

@@ -87,3 +87,18 @@ export interface MessageBubbleProps {
   content: string;
   isUser?: boolean;
 }
+
+export interface UserType {
+  name: string;
+  email: string;
+  image: string;
+  messageLimit: number;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ChatInterfaceProps {
+  chatId: string;
+  initialMessages: any[];
+}

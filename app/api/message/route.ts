@@ -26,7 +26,6 @@ export async function GET(req: Request) {
     if (!id) {
       return NextResponse.json({ error: "Missing chat id" }, { status: 400 });
     }
-
     const messages = await Message.find({ chatId: id });
 
     return NextResponse.json(messages);

@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("plan found");
+
 
     // check if subcription already exists
     const existingSubcription = await Subcription.findOne({

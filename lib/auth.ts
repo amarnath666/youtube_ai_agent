@@ -45,6 +45,7 @@ export const authOptions: AuthOptions = {
           email: user.email,
           image: user.image,
           googleId: account?.providerAccountId, // optional
+          messageLimit: 0,
         });
       }
 

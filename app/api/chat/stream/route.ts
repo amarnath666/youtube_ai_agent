@@ -8,11 +8,10 @@ import {
   SSE_DATA_PREFIX,
   SSE_LINE_DELIMITER,
 } from "@/lib/types";
-import { getServerSession } from "next-auth/next"
-import dbConnect from '@/lib/mongoose'
+import { getServerSession } from "next-auth/next";
+import dbConnect from "@/lib/mongoose";
 import { authOptions } from "@/lib/auth";
 import message from "@/models/message";
-
 
 
 function sendSSEMessage(
@@ -33,9 +32,9 @@ export async function POST(req: Request) {
     console.log("started POST route");
     const session = await getServerSession(authOptions);
 
-        if (!session) {
-          return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { messages, newMessage, chatId } =
       (await req.json()) as ChatRequestBody;
@@ -79,11 +78,10 @@ export async function POST(req: Request) {
         // });
 
         await message.create({
-            chatId,
-            content: newMessage,
-            role: "user",
-          }); 
-          console.log("message created");
+          chatId,
+          content: newMessage,
+          role: "user",
+        });
 
         // Convert messages to LangChain format
         const langChainMessages = [
