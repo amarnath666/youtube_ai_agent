@@ -17,53 +17,29 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// This goes in your layout.tsx or page.tsx
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.ytnotes.online'),
-  title: 'YTNotes — AI-powered YouTube video notes',
-  description: 'Watch less, learn more — turn YouTube videos into smart, AI-generated notes.',
-  keywords: ['youtube notes', 'video summarizer', 'AI notes', 'smart notes', 'study tool', 'productivity', 'YTNotes'],
-  authors: [{ name: 'YTNotes Team' }],
-  creator: 'YTNotes Team',
+  title: "YTNotes - AI-powered YouTube notes",
+  description: "AI-powered YouTube notes",
   openGraph: {
-    type: 'website',
-    url: 'https://www.ytnotes.online',
-    title: 'YTNotes — AI-powered YouTube video notes',
-    description: 'Watch less, learn more — turn YouTube videos into smart, AI-generated notes.',
-    siteName: 'YTNotes',
+    title: "YTNotes",
+    description: "Watch less, learn more — AI-powered video notes.",
+    url: "https://www.ytnotes.online/",
+    siteName: "YTNotes",
     images: [
       {
-        url: 'https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png',
+        url: "https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png",
         width: 1200,
         height: 630,
-        alt: 'YTNotes — AI-powered YouTube video notes',
       },
     ],
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    site: '@AmarnathDhumal',
-    creator: '@AmarnathDhumal',
-    title: 'YTNotes — AI-powered YouTube video notes',
-    description: 'Watch less, learn more — turn YouTube videos into smart, AI-generated notes.',
-    images: {
-      url: 'https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png',
-      alt: 'YTNotes — AI-powered YouTube video notes',
-    },
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  alternates: {
-    canonical: 'https://www.ytnotes.online',
+    card: "summary_large_image",
+    title: "YTNotes",
+    description: "Watch less, learn more — AI-powered video notes.",
+    images: ["https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png"],
   },
 };
 export default function RootLayout({
