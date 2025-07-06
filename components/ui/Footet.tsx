@@ -25,7 +25,7 @@ const Footer = () => {
 
   return (
     <div className="bg-zinc-950 rounded-t-[25px]">
-    <footer className=" text-gray-400 pt-[30px] lg:pt-[60px] px-4 md:px-[30px] lg:px-[60px]  w-full max-w-[1440px] mx-auto">
+    <footer className=" text-gray-400 pt-[30px] lg:pt-[60px] px-[30px] lg:px-[60px]  w-full max-w-[1440px] mx-auto">
       <div className="flex flex-col lg:flex-row justify-between gap-6 md:gap-12 pb-[25px] border-b border-zinc-700  ">
         {/* Left Side */}
         <div className="max-w-md">

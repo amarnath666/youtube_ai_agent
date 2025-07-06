@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { Providers } from "@/components/Providers";
 import Script from "next/script";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -17,10 +18,30 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "YTNotes",
+  title: "YTNotes - AI-powered YouTube notes",
   description: "AI-powered YouTube notes",
+  openGraph: {
+    title: "YTNotes",
+    description: "Watch less, learn more — AI-powered video notes.",
+    url: "https://www.ytnotes.online/",
+    siteName: "YTNotes",
+    images: [
+      {
+        url: "https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "YTNotes",
+    description: "Watch less, learn more — AI-powered video notes.",
+    images: ["https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png"],
+  },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
