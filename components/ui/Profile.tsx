@@ -33,8 +33,8 @@ const Profile = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar>
-          <AvatarImage src={existingUser?.image as string} />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={existingUser?.image as string || "https://pub-c6b2c51e46d544939af2d74ef91f1668.r2.dev/catalagoue-products/684fba3a-74c8-4ca5-ac38-b227b475fd2b.webp"} />
+         
         </Avatar>
       </DropdownMenuTrigger>
 

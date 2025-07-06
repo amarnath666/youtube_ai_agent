@@ -49,8 +49,8 @@ export function MessageBubble({ content, isUser }: MessageBubbleProps) {
           >
             {isUser ? (
               <Avatar className="h-7 w-7">
-                <AvatarImage src={user?.image as string} />
-                <AvatarFallback>{user?.name}</AvatarFallback>
+                <AvatarImage src={user?.image as string || "https://pub-c6b2c51e46d544939af2d74ef91f1668.r2.dev/catalagoue-products/684fba3a-74c8-4ca5-ac38-b227b475fd2b.webp"} />
+          
               </Avatar>
             ) : (
               <BotIcon className="h-5 w-5 text-white" />
