@@ -134,7 +134,7 @@ export default function ChatInterface({
                   name: message.tool,
                   input: message.input,
                 });
-              
+
                 // fullResponse += formatYouTubeEmbedOutput(
                 //   message.tool,
                 //   message.input,
@@ -229,7 +229,6 @@ export default function ChatInterface({
     const fetchUserDetails = async () => {
       const response = await axios.get("/api/user");
       setUserDetails(response?.data);
-     
     };
     fetchUserDetails();
   }, []);
@@ -237,13 +236,12 @@ export default function ChatInterface({
   useEffect(() => {
     const fetchSubcription = async () => {
       const response = await axios.get("/api/subscribe");
-      setSubcription(response?.data?.subscription);
+      setSubcription(response?.data);
     };
     fetchSubcription();
   }, []);
 
-   console.log("userDetails", userDetails);
-
+  console.log(subcription, "subcription");
 
   return (
     <main className="flex flex-col h-[calc(100vh-theme(spacing.14))]">
@@ -260,8 +258,9 @@ export default function ChatInterface({
             />
           ))}
 
-          
-          {subcription?.status === "active" && userDetails && userDetails?.messageLimit >= 10 && <LimitOver />}
+          {subcription?.length === 0 &&
+            userDetails &&
+            userDetails?.messageLimit >= 10 && <LimitOver />}
 
           {streamedResponse && <MessageBubble content={streamedResponse} />}
 
@@ -295,11 +294,18 @@ export default function ChatInterface({
               onChange={(e) => setInput(e.target.value)}
               placeholder="Enter your youtube url..."
               className="flex-1 py-3 px-4 rounded-2xl border   pr-12 bg-zinc-800 placeholder:text-white"
-              disabled={isLoading || (userDetails?.messageLimit ?? 0) >= 10}
+              disabled={
+                isLoading ||
+                (subcription?.length === 0 &&
+                  (userDetails?.messageLimit ?? 0) >= 10)
+              }
             />
             <Button
               type="submit"
-              disabled={isLoading || !input.trim()}
+              disabled={isLoading || !input.trim() ||
+                (subcription?.length === 0 &&
+                  (userDetails?.messageLimit ?? 0) >= 10)
+              }
               className={`absolute right-1.5 cursor-pointer rounded-xl h-9 w-9 p-0 flex items-center justify-center transition-all ${
                 input.trim()
                   ? "bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] text-white shadow-sm"
