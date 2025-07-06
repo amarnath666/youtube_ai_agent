@@ -201,7 +201,7 @@ const PricingComponent = () => {
       }
     };
     fetchData();
-  }, [session, subscription]);
+  }, [session]);
 
   if (subscription) {
     console.log(subscription, "subcription");
