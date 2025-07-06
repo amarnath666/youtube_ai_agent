@@ -27,6 +27,7 @@ export default function ChatInterface({
   } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [chatLenght, setChatLenght] = useState(0);
+  const [subcription, setSubcription] = useState<any>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -233,6 +234,14 @@ export default function ChatInterface({
     fetchUserDetails();
   }, []);
 
+  useEffect(() => {
+    const fetchSubcription = async () => {
+      const response = await axios.get("/api/subscribe");
+      setSubcription(response?.data?.subscription);
+    };
+    fetchSubcription();
+  }, []);
+
    console.log("userDetails", userDetails);
 
 
@@ -251,7 +260,8 @@ export default function ChatInterface({
             />
           ))}
 
-          {userDetails && userDetails?.messageLimit >= 10 && <LimitOver />}
+          
+          {subcription?.status === "active" && userDetails && userDetails?.messageLimit >= 10 && <LimitOver />}
 
           {streamedResponse && <MessageBubble content={streamedResponse} />}
 
