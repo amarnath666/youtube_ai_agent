@@ -57,7 +57,7 @@ const createYouTubeTranscriptTool = () => {
       try {
         console.log("🎥 Fetching YouTube transcript for:", url);
 
-        const apiUrl = `${baseUrl}/youtube-transcript`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/youtube-transcript`;
         const response = await axios.post(apiUrl, { url });
 
         console.log("response came", response);
