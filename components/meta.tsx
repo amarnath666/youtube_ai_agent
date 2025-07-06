@@ -23,7 +23,7 @@ export const siteConfig = {
   title: "YTNotes — AI-powered YouTube video notes",
   description:
     "Watch less, learn more — turn YouTube videos into smart, AI-generated notes.",
-  url: process.env.NEXT_PUBLIC_URL || "https://www.ytnotes.online",
+  url: "https://www.ytnotes.online",
   ogImage: "/meta/og-image.png",
   author: {
     name: "YTNotes Team",
