@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     siteName: 'YTNotes',
     images: [
       {
-        url: 'https://www.ytnotes.online/meta/og-image.png',
+        url: 'https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png',
         width: 1200,
         height: 630,
         alt: 'YTNotes — AI-powered YouTube video notes',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title: 'YTNotes — AI-powered YouTube video notes',
     description: 'Watch less, learn more — turn YouTube videos into smart, AI-generated notes.',
     images: {
-      url: 'https://www.ytnotes.online/meta/og-image.png',
+      url: 'https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png',
       alt: 'YTNotes — AI-powered YouTube video notes',
     },
   },
@@ -66,7 +66,6 @@ export const metadata: Metadata = {
     canonical: 'https://www.ytnotes.online',
   },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
