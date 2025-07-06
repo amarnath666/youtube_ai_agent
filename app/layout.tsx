@@ -1,11 +1,11 @@
-
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 import { Providers } from "@/components/Providers";
 import Script from "next/script";
-import { generateMetadata as getMetadata } from "@/components/meta";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +17,55 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: any = getMetadata('/');
+// This goes in your layout.tsx or page.tsx
+export const metadata: Metadata = {
+  metadataBase: new URL('https://www.ytnotes.online'),
+  title: 'YTNotes — AI-powered YouTube video notes',
+  description: 'Watch less, learn more — turn YouTube videos into smart, AI-generated notes.',
+  keywords: ['youtube notes', 'video summarizer', 'AI notes', 'smart notes', 'study tool', 'productivity', 'YTNotes'],
+  authors: [{ name: 'YTNotes Team' }],
+  creator: 'YTNotes Team',
+  openGraph: {
+    type: 'website',
+    url: 'https://www.ytnotes.online',
+    title: 'YTNotes — AI-powered YouTube video notes',
+    description: 'Watch less, learn more — turn YouTube videos into smart, AI-generated notes.',
+    siteName: 'YTNotes',
+    images: [
+      {
+        url: 'https://www.ytnotes.online/meta/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'YTNotes — AI-powered YouTube video notes',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@AmarnathDhumal',
+    creator: '@AmarnathDhumal',
+    title: 'YTNotes — AI-powered YouTube video notes',
+    description: 'Watch less, learn more — turn YouTube videos into smart, AI-generated notes.',
+    images: {
+      url: 'https://www.ytnotes.online/meta/og-image.png',
+      alt: 'YTNotes — AI-powered YouTube video notes',
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://www.ytnotes.online',
+  },
+};
 
 export default function RootLayout({
   children,
