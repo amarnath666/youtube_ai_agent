@@ -221,7 +221,7 @@ const PricingComponent = () => {
               YTNotes Plan
             </span>
           </h2>
-          <p className="text-[14px] md:text-[20px] leading-snug text-gray-400 text-center ">
+          <p className="text-[14px] md:text-[20px] leading-snug text-gray-400 text-center max-w-[700px] mx-auto">
             Transform your YouTube learning experience with powerful note-taking
             and summarization tools
           </p>
