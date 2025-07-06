@@ -60,7 +60,7 @@ const createYouTubeTranscriptTool = () => {
         const apiUrl = `${baseUrl}/youtube-transcript`;
         const response = await axios.post(apiUrl, { url });
 
-        console.log("response came");
+        console.log("response came", response);
 
         const data = response?.data;
 
@@ -90,7 +90,7 @@ ${doc.pageContent}
 
         return "No transcript data available for this video.";
       } catch (error: any) {
-        // console.error("❌ YouTube transcript error:", error);
+        console.error("❌ YouTube transcript error:", error);
         return `${error.message}`;
       }
     },
