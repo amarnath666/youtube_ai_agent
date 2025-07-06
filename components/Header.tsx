@@ -15,7 +15,7 @@ export default function Header() {
 
   return (
     <header className="border-b border-gray-500/50 bg-zinc-800 backdrop-blur-xl sticky top-0 z-50">
-      <div className="flex items-center justify-between px-4 py-3">
+      <div className="flex items-center justify-between px-2 sm:px-4 py-3">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
