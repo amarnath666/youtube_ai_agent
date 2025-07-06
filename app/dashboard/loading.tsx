@@ -1,11 +1,5 @@
-import { Loader2 } from "lucide-react";
+import CustomSpinner from "@/components/ui/CustomSpinner";
 
-const CustomSpinner = () => {
-    return (
-        <div className="flex items-center justify-center h-screen">
-            <Loader2 className="animate-spin text-custom-blue-2 h-16 w-16" />
-        </div>
-    );
-};
-
-export default CustomSpinner;
+export default function Loading() {
+  return <CustomSpinner />;
+}

@@ -56,6 +56,7 @@ export default function ChatInterface({
     }
   };
 
+  // Handle Submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedInput = input.trim();

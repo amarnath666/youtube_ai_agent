@@ -10,8 +10,9 @@ export async function POST(req: Request) {
         // if (!session) {
         //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         // }
-
+        console.log("req reached")
         await dbConnect();
+        console.log("db connected")
 
         const { type, price } = await req.json();
 

@@ -8,6 +8,7 @@ import { NavigationContext } from "@/lib/context/navigation";
 import { use } from "react";
 import { signOut } from "next-auth/react";
 import Profile from "./ui/Profile";
+import { redirect } from "next/navigation";
 
 export default function Header() {
   const { setIsMobileNavOpen } = use(NavigationContext);
@@ -24,7 +25,9 @@ export default function Header() {
           >
             <HamburgerMenuIcon className="h-5 w-5" />
           </Button>
-          <div className="font-semibold ">YT Notes</div>
+          <div 
+          onClick={() => redirect("/")}
+          className="font-semibold cursor-pointer">YTNotes</div>
         </div>
         <div className="flex items-center">
            <Profile />

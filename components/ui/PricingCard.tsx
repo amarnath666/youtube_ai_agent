@@ -25,8 +25,8 @@ const PricingComponent = () => {
   const [planData, setPlanData] = useState<Plan[]>([]);
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [subscription, setSubscription] = useState<any[]>([]);
+  const [subscription, setSubscription] = useState<any>([]);
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
 
   // fetch plan data
   useEffect(() => {
@@ -100,6 +100,7 @@ const PricingComponent = () => {
 
   // login or create order id
   const handleClick = async (price: number, planId: string) => {
+    setSelectedPlanId(planId);
     if (planId === "random") {
       // Free plan logic → just navigate
       router.push("/dashboard");
@@ -108,7 +109,7 @@ const PricingComponent = () => {
 
     if (session) {
       try {
-        setIsLoading(true);
+       
         const response = await axios.post("/api/order", {
           amount: price * 100,
           currency: "INR",
@@ -123,7 +124,8 @@ const PricingComponent = () => {
         toast.error(err.response.data.error || "Something went wrong");
         console.error("API error:", err);
       } finally {
-        setIsLoading(false);
+      
+        setSelectedPlanId(null);
       }
     } else {
       setOpen(true);
@@ -160,6 +162,7 @@ const PricingComponent = () => {
             const res = result.data;
 
             if (res.isOk) {
+              router.push("/dashboard");
               toast.success("Payment successful");
             } else {
               toast.error(res.message || "Verification failed");
@@ -181,7 +184,7 @@ const PricingComponent = () => {
       const paymentObject = new window.Razorpay(options);
 
       paymentObject.on("payment.failed", function (response: any) {
-        alert(`Payment failed: ${response.error.description}`);
+        toast.error(`Payment failed: ${response.error.description}`);
       });
 
       paymentObject.open();
@@ -206,7 +209,7 @@ const PricingComponent = () => {
 
   const today = getTodayDateInIst();
 
-  console.log(subscription, "subcription");
+  console.log(subscription.length, "subscription");
 
   return (
     <div className="bg-zinc-900 min-h-screen my-[30px] lg:my-[100px] ]  w-full max-w-[1440px] mx-auto">
@@ -288,19 +291,19 @@ const PricingComponent = () => {
               </ul>
 
               <button
-                disabled={subscription?.length > 0 && plan.id === "random"}
+                disabled={subscription?.status === "active" && plan.id === "random"}
                 onClick={() => handleClick(plan?.price as number, plan.id)}
                 className={`w-full cursor-pointer py-3 px-6 rounded-lg font-semibold transition-colors duration-200 ${
-                  subscription?.length > 0 && plan.id === "random"
+                  subscription?.status === "active" && plan.id === "random"
                     ? "bg-zinc-400 text-white opacity-50 cursor-not-allowed"
                     : plan.buttonStyle
                 }`}
               >
-                {isLoading ? (
+                {selectedPlanId === plan.id ? (
                   <div className="flex justify-center items-center ">
                     <SpinnerComponent />
                   </div>
-                ) : subscription?.length > 0 && plan.id !== "random" ? (
+                ) : subscription?.status === "active" && plan.id !== "random" ? (
                   "Renew Plan"
                 ) : (
                   plan.buttonText

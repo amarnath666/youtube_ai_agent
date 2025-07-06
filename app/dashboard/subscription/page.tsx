@@ -39,14 +39,14 @@ export default async function subcriptionPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-start p-8 bg-zinc-900 min-h-screen text-white">
+    <div className="flex-1 flex flex-col items-center justify-start px-4 py-[30px] md:p-8 bg-zinc-900 min-h-screen text-white">
       <div className="w-full max-w-3xl">
-        <h1 className="text-4xl font-extrabold mb-8 text-center">
+        <h1 className="text-2xl md:text-4xl font-semibold mb-8 text-center">
           Your Subscription
         </h1>
 
         {/* Subscription Info */}
-        <div className="bg-zinc-800 rounded-xl p-6 shadow-lg mb-10">
+        <div className="bg-zinc-800 rounded-xl p-4 md:p-6 shadow-lg mb-10">
           <h2 className="text-2xl font-semibold mb-4">Subscription Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -65,7 +65,7 @@ export default async function subcriptionPage() {
         </div>
 
         {/* Transactions */}
-        <h2 className="text-3xl font-bold mb-4">Transactions</h2>
+        <h2 className="text-2xl md:text-3xl font-semibold mb-4">Transactions</h2>
         <div className="space-y-6">
           {/* Initial Payment */}
           <div className="bg-zinc-800 rounded-xl p-6 shadow-md">
@@ -73,13 +73,13 @@ export default async function subcriptionPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <p className="text-zinc-400">Date</p>
-                <p className="text-base">
+                <p className="text-sm md:text-base">
                   {formatDate(subscription.createdAt)}
                 </p>
               </div>
               <div>
                 <p className="text-zinc-400">Amount Paid</p>
-                <p className="text-base">₹{subscription.pricePaid}</p>
+                <p className="text-sm md:text-base">₹{subscription.pricePaid}</p>
               </div>
               <div></div>
             </div>
@@ -90,19 +90,19 @@ export default async function subcriptionPage() {
             subscription.renewals.map((renewal: any) => (
               <div
                 key={renewal._id}
-                className="bg-zinc-800 rounded-xl p-6 shadow-md"
+                className="bg-zinc-800 rounded-xl p-4 sm:p-6 shadow-md"
               >
-                <h3 className="text-xl font-semibold mb-2">Renewal</h3>
+                <h3 className="text-base md:text-xl font-semibold mb-2">Renewal</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <p className="text-zinc-400">Renewal Date</p>
-                    <p className="text-base">
+                    <p className="text-sm md:text-base">
                       {formatDate(renewal?.renewalDate)}
                     </p>
                   </div>
                   <div>
                     <p className="text-zinc-400">Amount Paid</p>
-                    <p className="text-base">₹{renewal?.pricePaid}</p>
+                    <p className="text-sm md:text-base">₹{renewal?.pricePaid}</p>
                   </div>
                 </div>
               </div>

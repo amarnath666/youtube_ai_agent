@@ -84,7 +84,7 @@ export default function Sidebar() {
         <div className="p-4 ">
           <Button
             onClick={handleNewChat}
-            className="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-200/50 shadow-sm hover:shadow transition-all duration-200"
+            className="w-full cursor-pointer bg-white hover:bg-gray-50 text-gray-700 border border-gray-200/50 shadow-sm hover:shadow transition-all duration-200"
           >
             <PlusIcon className="mr-2 h-4 w-4" /> New Chat
           </Button>
