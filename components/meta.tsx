@@ -52,6 +52,9 @@ export const defaultPageMeta: PageMeta = {
 
 export function generateMetadata(pathname: string): Metadata {
   const pageMeta = defaultPageMeta;
+  
+  // Ensure absolute URL for images
+  const imageUrl = "https://pub-cc78a2555b07407e9175b8ae35f45925.r2.dev/Screenshot%202025-07-06%20182309.png"
 
   return {
     metadataBase: new URL(siteConfig.url),
@@ -68,7 +71,7 @@ export function generateMetadata(pathname: string): Metadata {
       siteName: siteConfig.title,
       images: [
         {
-          url: pageMeta.ogImage || siteConfig.ogImage,
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: pageMeta.title,
@@ -77,10 +80,14 @@ export function generateMetadata(pathname: string): Metadata {
     },
     twitter: {
       card: pageMeta.twitterCard || "summary_large_image",
+      site: siteConfig.author.twitter,
+      creator: siteConfig.author.twitter,
       title: pageMeta.title,
       description: pageMeta.description,
-      creator: siteConfig.author.twitter,
-      images: [pageMeta.ogImage || siteConfig.ogImage],
+      images: {
+        url: imageUrl,
+        alt: pageMeta.title,
+      },
     },
     robots: {
       index: true,
