@@ -81,7 +81,7 @@ const PricingComponent = () => {
       name: "Yearly",
       price: planData?.[1]?.price,
       period: "per year",
-      originalPrice: "₹6000",
+      originalPrice: "₹5999",
       savings: "Save ₹1000",
       description: "Best value for power users",
       features: [

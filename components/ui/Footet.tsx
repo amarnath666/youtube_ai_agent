@@ -67,7 +67,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             className="hover:text-white transition-colors"
           >
-            Twitter
+            X
           </a>
           <a
             href="https://www.linkedin.com/in/amarnath-dhumal/"
