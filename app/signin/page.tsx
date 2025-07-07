@@ -7,6 +7,7 @@ import { toast } from "sonner";
 // import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { SpinnerComponent } from "@/components/ui/Spinner";
+import { isInAppBrowser } from "@/components/ui/AppinBrower";
 
 export default function SignInPage() {
   //   const searchParams = useSearchParams();
@@ -14,6 +15,13 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
+    if (isInAppBrowser()) {
+      // Show your custom modal or redirect user to open in Chrome/Safari
+      alert(
+        "Google login won't work in this browser. Please open in Chrome/Browser."
+      );
+      return;
+    }
     try {
       setLoading(true);
       await signIn("google", {

@@ -10,6 +10,7 @@ import { FaGoogle } from "react-icons/fa";
 import { toast } from "sonner";
 import { useState } from "react";
 import { SpinnerComponent } from "./Spinner";
+import { isInAppBrowser } from "./AppinBrower";
 
 export function SignPopup({
   open,
@@ -20,6 +21,13 @@ export function SignPopup({
 }) {
   const [loading, setLoading] = useState(false);
   const handleSignIn = async () => {
+    if (isInAppBrowser()) {
+      // Show your custom modal or redirect user to open in Chrome/Safari
+      alert(
+        "Google login won't work in this browser. Please open in Chrome/Browser."
+      );
+      return;
+    }
     try {
       setLoading(true);
       await signIn("google");
