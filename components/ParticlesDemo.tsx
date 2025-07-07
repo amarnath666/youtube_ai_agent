@@ -25,13 +25,13 @@ export function ParticlesDemo() {
         <AnimatedShinyTextDemo name={"✨ AI Powered Notes"} />
         <span className="pointer-events-none z-10 whitespace-pre-wrap text-center text-[32px] xs:text-4xl md:text-6xl xl:text-8xl font-semibold leading-none bg-gradient-to-br from-white from-30% to-white/40 mt-[25px] bg-clip-text text-transparent">
           Turn YouTube Videos <br />
-          into <span 
-          className="bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] bg-clip-text text-transparent">
-            Smart Notes</span>
+          into{" "}
+          <span className="bg-gradient-to-r from-[#c471f5] via-[#fa71cd] to-[#fda085] bg-clip-text text-transparent">
+            Smart Notes
+          </span>
         </span>
         <p className="text-[16px] md:text-[20px] leading-snug text-gray-400 text-center pb-[25px] mt-[25px] max-w-[650px] mx-auto">
           Effortlessly convert any YouTube video into clear, concise notes.
-         
           Perfect for learning, revising, or sharing key takeaways — all in
           seconds.
         </p>

@@ -5,7 +5,7 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 import { Providers } from "@/components/Providers";
 import Script from "next/script";
-
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
