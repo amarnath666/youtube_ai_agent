@@ -59,6 +59,7 @@ export default function RootLayout({
         <Providers>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {children}
+             <Analytics />
             <Toaster />
           </ThemeProvider>
         </Providers>
