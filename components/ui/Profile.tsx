@@ -19,7 +19,7 @@ const Profile = () => {
   const { data: session, status } = useSession();
 
   if (!session) {
-    return <div>Not signed in</div>;
+    return
   }
 
   const existingUser = session?.user;
@@ -41,8 +41,8 @@ const Profile = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel className="flex flex-row items-center justify-center gap-2">
           <Avatar>
-            <AvatarImage src={existingUser?.image as string} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={existingUser?.image as string || "https://pub-c6b2c51e46d544939af2d74ef91f1668.r2.dev/catalagoue-products/684fba3a-74c8-4ca5-ac38-b227b475fd2b.webp"} />
+            {/* <AvatarFallback>CN</AvatarFallback> */}
           </Avatar>
           {capitalizeAfterSpace(existingUser?.name as string)}
         </DropdownMenuLabel>
