@@ -2,7 +2,8 @@ import HompageHeader from "@/components/HomepageHeader";
 import Footer from "@/components/ui/Footet";
 
 const RefundPolicy = () => (
-    <div><HompageHeader />
+      <div className="bg-zinc-900">
+      <HompageHeader />
   <div className="p-6 pt-[100px] max-w-3xl mx-auto">
     <h1 className="text-2xl font-bold mb-4">Refund Policy</h1>
     <p className="mb-4">

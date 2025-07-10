@@ -3,8 +3,8 @@ const Footer = () => {
     {
       title: "Product",
       items: [{
-        name: "About Us",
-        href: "/about-us",
+        name: "About",
+        href: "/about",
       }, {
         name: "Privacy Policy",
         href: "/privacy-policy",
@@ -15,8 +15,8 @@ const Footer = () => {
         name: "Terms and Conditions",
         href: "/terms-and-conditions",
         }, {
-        name: "Contact Us",
-        href: "/contact-us",
+        name: "Contact",
+        href: "/contact",
       }],
       
     },
